@@ -159,6 +159,8 @@ body {
   width: var(--sidebar-width);
   min-height: 100vh;
   background: var(--bg-sidebar);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
   box-shadow: var(--shadow-sidebar);
   display: flex;
   flex-direction: column;
@@ -169,10 +171,13 @@ body {
   transition: background-color var(--transition-slow), box-shadow var(--transition-slow);
 }
 
+html.dark .sidebar {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
 .sidebar-logo {
   padding: 22px 20px 18px;
-  border-bottom: 1px solid var(--border-subtle);
-  transition: border-color var(--transition-slow);
 }
 
 .logo-mark {
@@ -465,12 +470,15 @@ html.dark .page-hero-title {
   border-radius: var(--border-radius);
   padding: 22px;
   box-shadow: var(--shadow-card);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   transition: all var(--transition);
 }
 
 .card:hover {
   box-shadow: var(--shadow-card-hover);
   border-color: var(--border-medium);
+  transform: translateY(-1px);
 }
 
 .card-header {
@@ -502,18 +510,37 @@ html.dark .page-hero-title {
 .kpi-card {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--border-radius);
+  border-radius: 20px;
   padding: 20px 22px;
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   transition: all var(--transition);
   cursor: default;
 }
 
 .kpi-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   border-color: var(--border-medium);
   box-shadow: var(--shadow-card-hover);
+  will-change: transform;
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 20px 20px 0 0;
+  pointer-events: none;
+}
+
+html.dark .kpi-card::before {
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .kpi-card-inner {
