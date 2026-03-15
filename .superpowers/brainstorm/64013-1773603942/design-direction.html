@@ -1,0 +1,187 @@
+<h2>Which design direction feels right for Ad-Lab?</h2>
+<p class="subtitle">The brand purple stays — but where and how it's used changes the entire feel. Pick the direction that matches the agency's identity.</p>
+
+<style>
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 24px; }
+  .card { cursor: pointer; border-radius: 12px; overflow: hidden; border: 2px solid transparent; transition: all 0.2s; }
+  .card:hover { transform: translateY(-2px); }
+  .card-image { padding: 0; }
+  .card-body { padding: 16px; }
+  .card-body h3 { margin: 0 0 6px; font-size: 15px; font-weight: 600; }
+  .card-body p { margin: 0; font-size: 13px; opacity: 0.7; line-height: 1.5; }
+
+  /* OPTION A: Executive Dark */
+  .mock-a { background: #0d0d16; padding: 16px; font-family: -apple-system, sans-serif; }
+  .mock-a .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .mock-a .logo { font-size: 12px; font-weight: 700; color: #fff; letter-spacing: 0.08em; }
+  .mock-a .logo span { color: #ca5cec; }
+  .mock-a .layout { display: grid; grid-template-columns: 48px 1fr; gap: 12px; }
+  .mock-a .sidebar { background: #13131f; border-radius: 10px; padding: 10px 6px; display: flex; flex-direction: column; gap: 6px; align-items: center; }
+  .mock-a .nav-dot { width: 28px; height: 28px; border-radius: 7px; background: rgba(255,255,255,0.06); }
+  .mock-a .nav-dot.active { background: rgba(202,92,236,0.25); border: 1px solid rgba(202,92,236,0.4); }
+  .mock-a .content { display: flex; flex-direction: column; gap: 10px; }
+  .mock-a .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .mock-a .kpi { background: #13131f; border-radius: 8px; padding: 10px; border: 1px solid rgba(255,255,255,0.06); }
+  .mock-a .kpi-val { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+  .mock-a .kpi-label { font-size: 9px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.05em; }
+  .mock-a .chart-area { background: #13131f; border-radius: 8px; padding: 10px; border: 1px solid rgba(255,255,255,0.06); height: 60px; display: flex; align-items: flex-end; gap: 4px; }
+  .mock-a .bar { border-radius: 3px 3px 0 0; flex: 1; }
+  .mock-a .accent-text { color: #ca5cec; font-size: 10px; font-weight: 600; letter-spacing: 0.04em; margin-bottom: 6px; }
+
+  /* OPTION B: Clean Professional (Light) */
+  .mock-b { background: #f8f9fc; padding: 16px; font-family: -apple-system, sans-serif; }
+  .mock-b .layout { display: grid; grid-template-columns: 52px 1fr; gap: 10px; }
+  .mock-b .sidebar { background: #fff; border-radius: 10px; padding: 10px 6px; display: flex; flex-direction: column; gap: 6px; align-items: center; border: 1px solid #e8eaf0; }
+  .mock-b .nav-dot { width: 28px; height: 28px; border-radius: 7px; background: transparent; }
+  .mock-b .nav-dot.active { background: #f3e8ff; }
+  .mock-b .nav-dot.active::after { content: ''; display: block; width: 3px; height: 18px; background: #ca5cec; border-radius: 2px; margin: 5px auto 0; }
+  .mock-b .content { display: flex; flex-direction: column; gap: 10px; }
+  .mock-b .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .mock-b .kpi { background: #fff; border-radius: 8px; padding: 10px; border: 1px solid #e8eaf0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .mock-b .kpi-val { font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 2px; }
+  .mock-b .kpi-label { font-size: 9px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+  .mock-b .chart-area { background: #fff; border-radius: 8px; padding: 10px; border: 1px solid #e8eaf0; height: 60px; display: flex; align-items: flex-end; gap: 4px; }
+  .mock-b .bar { border-radius: 3px 3px 0 0; flex: 1; }
+  .mock-b .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; background: #fff; padding: 8px 12px; border-radius: 8px; border: 1px solid #e8eaf0; }
+  .mock-b .logo { font-size: 12px; font-weight: 700; color: #1e293b; letter-spacing: 0.06em; }
+  .mock-b .logo span { color: #ca5cec; }
+
+  /* OPTION C: Premium Neutral (Warm Light) */
+  .mock-c { background: #fafaf9; padding: 16px; font-family: -apple-system, sans-serif; }
+  .mock-c .layout { display: grid; grid-template-columns: 160px 1fr; gap: 10px; }
+  .mock-c .sidebar { background: #fff; border-radius: 10px; padding: 12px 10px; display: flex; flex-direction: column; gap: 4px; border: 1px solid #e9e9e7; }
+  .mock-c .brand { font-size: 11px; font-weight: 800; color: #0f172a; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; padding: 0 4px; }
+  .mock-c .brand span { color: #ca5cec; }
+  .mock-c .nav-item { font-size: 11px; padding: 6px 8px; border-radius: 6px; color: #64748b; font-weight: 500; }
+  .mock-c .nav-item.active { background: #0f172a; color: #fff; }
+  .mock-c .content { display: flex; flex-direction: column; gap: 10px; }
+  .mock-c .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .mock-c .kpi { background: #fff; border-radius: 8px; padding: 10px; border: 1px solid #e9e9e7; }
+  .mock-c .kpi-val { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 2px; }
+  .mock-c .kpi-label { font-size: 9px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+  .mock-c .chart-area { background: #fff; border-radius: 8px; padding: 10px; border: 1px solid #e9e9e7; height: 60px; display: flex; align-items: flex-end; gap: 4px; }
+  .mock-c .bar { border-radius: 3px 3px 0 0; flex: 1; }
+  .mock-c .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .mock-c .page-title { font-size: 13px; font-weight: 700; color: #0f172a; }
+  .mock-c .page-title span { color: #94a3b8; font-weight: 400; }
+</style>
+
+<div class="cards">
+
+  <!-- OPTION A: Executive Dark -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mock-a">
+        <div class="topbar">
+          <div class="logo"><span>▮</span> AD-LAB</div>
+        </div>
+        <div class="layout">
+          <div class="sidebar">
+            <div class="nav-dot active"></div>
+            <div class="nav-dot"></div>
+            <div class="nav-dot"></div>
+            <div class="nav-dot"></div>
+          </div>
+          <div class="content">
+            <div class="accent-text">OVERVIEW</div>
+            <div class="kpi-row">
+              <div class="kpi"><div class="kpi-val">$41k</div><div class="kpi-label">Total</div></div>
+              <div class="kpi"><div class="kpi-val" style="color:#ca5cec">$26k</div><div class="kpi-label">Vince</div></div>
+              <div class="kpi"><div class="kpi-val" style="color:#06b6d4">$15k</div><div class="kpi-label">Difiano</div></div>
+            </div>
+            <div class="chart-area">
+              <div class="bar" style="height:40%;background:rgba(202,92,236,0.6)"></div>
+              <div class="bar" style="height:55%;background:rgba(202,92,236,0.6)"></div>
+              <div class="bar" style="height:45%;background:rgba(202,92,236,0.6)"></div>
+              <div class="bar" style="height:70%;background:rgba(202,92,236,0.6)"></div>
+              <div class="bar" style="height:60%;background:rgba(202,92,236,0.6)"></div>
+              <div class="bar" style="height:90%;background:#ca5cec"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Executive Dark</h3>
+      <p>Dark-first UI. The purple becomes a focused accent on data. Feels premium, serious, analytical — like a trading terminal.</p>
+    </div>
+  </div>
+
+  <!-- OPTION B: Clean Professional -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mock-b">
+        <div class="topbar">
+          <div class="logo"><span>▮</span> AD-LAB</div>
+        </div>
+        <div class="layout">
+          <div class="sidebar">
+            <div class="nav-dot active"></div>
+            <div class="nav-dot"></div>
+            <div class="nav-dot"></div>
+            <div class="nav-dot"></div>
+          </div>
+          <div class="content">
+            <div class="kpi-row">
+              <div class="kpi"><div class="kpi-val">$41k</div><div class="kpi-label">Total</div></div>
+              <div class="kpi"><div class="kpi-val" style="color:#ca5cec">$26k</div><div class="kpi-label">Vince</div></div>
+              <div class="kpi"><div class="kpi-val" style="color:#06b6d4">$15k</div><div class="kpi-label">Difiano</div></div>
+            </div>
+            <div class="chart-area">
+              <div class="bar" style="height:40%;background:#e9d5ff"></div>
+              <div class="bar" style="height:55%;background:#e9d5ff"></div>
+              <div class="bar" style="height:45%;background:#e9d5ff"></div>
+              <div class="bar" style="height:70%;background:#e9d5ff"></div>
+              <div class="bar" style="height:60%;background:#e9d5ff"></div>
+              <div class="bar" style="height:90%;background:#ca5cec"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Clean Professional</h3>
+      <p>Minimal light UI. Pure white cards, neutral grays, purple as a hairline accent only. Feels like Stripe or Linear.</p>
+    </div>
+  </div>
+
+  <!-- OPTION C: Premium Neutral -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="mock-c">
+        <div class="topbar">
+          <div class="page-title">Overview <span>· Q1 2024</span></div>
+        </div>
+        <div class="layout">
+          <div class="sidebar">
+            <div class="brand"><span>■</span> AD-LAB</div>
+            <div class="nav-item active">Dashboard</div>
+            <div class="nav-item">Trends</div>
+            <div class="nav-item">Clients</div>
+            <div class="nav-item">Compare</div>
+          </div>
+          <div class="content">
+            <div class="kpi-row">
+              <div class="kpi"><div class="kpi-val">$41k</div><div class="kpi-label">Total</div></div>
+              <div class="kpi"><div class="kpi-val" style="color:#ca5cec">$26k</div><div class="kpi-label">Vince</div></div>
+              <div class="kpi"><div class="kpi-val" style="color:#06b6d4">$15k</div><div class="kpi-label">Difiano</div></div>
+            </div>
+            <div class="chart-area">
+              <div class="bar" style="height:40%;background:#f1e0ff"></div>
+              <div class="bar" style="height:55%;background:#f1e0ff"></div>
+              <div class="bar" style="height:45%;background:#f1e0ff"></div>
+              <div class="bar" style="height:70%;background:#f1e0ff"></div>
+              <div class="bar" style="height:60%;background:#f1e0ff"></div>
+              <div class="bar" style="height:90%;background:#ca5cec"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Premium Neutral</h3>
+      <p>Warm white with a full-width sidebar showing nav text. Dark active states, minimal color. Sophisticated and agency-grade.</p>
+    </div>
+  </div>
+
+</div>

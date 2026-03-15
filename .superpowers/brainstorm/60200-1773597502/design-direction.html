@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ad-Lab Redesign — Design Direction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #0f0f18;
+    color: #e2e8f0;
+    padding: 32px;
+    min-height: 100vh;
+  }
+
+  .page-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .page-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 36px;
+    font-weight: 400;
+  }
+
+  .toggle-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .mode-btn {
+    padding: 8px 20px;
+    border-radius: 99px;
+    border: 1px solid rgba(202,92,236,0.3);
+    background: rgba(202,92,236,0.1);
+    color: #ca5cec;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .mode-btn.active {
+    background: #ca5cec;
+    color: #fff;
+    border-color: #ca5cec;
+    box-shadow: 0 4px 20px rgba(202,92,236,0.4);
+  }
+
+  /* ---- MOCKUP WRAPPER ---- */
+  .mockup-wrapper {
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+    max-width: 1100px;
+  }
+
+  /* ========================= DARK MOCKUP ========================= */
+  .mockup-shell {
+    display: flex;
+    height: 680px;
+    background: #0a0a0f;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* SIDEBAR */
+  .mock-sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(24px);
+    border-right: 1px solid rgba(202,92,236,0.15);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .mock-logo-area {
+    padding: 22px 18px 20px;
+    border-bottom: 1px solid rgba(202,92,236,0.1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .mock-logo-box {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(202,92,236,0.3), rgba(139,92,246,0.3));
+    border: 1px solid rgba(202,92,236,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: #ca5cec;
+  }
+
+  .mock-logo-text {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    color: #ca5cec;
+    letter-spacing: -0.3px;
+  }
+
+  .mock-logo-sub {
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    font-weight: 400;
+    margin-top: 1px;
+  }
+
+  .mock-nav {
+    padding: 18px 12px;
+    flex: 1;
+  }
+
+  .mock-nav-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    padding: 4px 10px 10px;
+  }
+
+  .mock-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 2px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+  }
+
+  .mock-nav-item.active {
+    background: rgba(202,92,236,0.12);
+    color: #ca5cec;
+    font-weight: 600;
+    box-shadow: 0 0 20px rgba(202,92,236,0.08);
+  }
+
+  .mock-nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 18px;
+    background: linear-gradient(180deg, #ca5cec, #8b5cf6);
+    border-radius: 0 3px 3px 0;
+  }
+
+  .mock-nav-icon {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    background: currentColor;
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+
+  .mock-nav-item.active .mock-nav-icon {
+    opacity: 1;
+    background: #ca5cec;
+  }
+
+  .mock-sidebar-footer {
+    padding: 14px 12px;
+    border-top: 1px solid rgba(202,92,236,0.1);
+  }
+
+  .mock-theme-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border-radius: 99px;
+    border: 1px solid rgba(202,92,236,0.2);
+    background: rgba(202,92,236,0.06);
+    color: rgba(255,255,255,0.5);
+    font-size: 12px;
+    font-weight: 500;
+    box-shadow: 0 0 20px rgba(202,92,236,0.08);
+  }
+
+  .mock-theme-icon {
+    font-size: 13px;
+  }
+
+  /* MAIN AREA */
+  .mock-main {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: #0a0a0f;
+  }
+
+  /* Hero banner */
+  .mock-hero {
+    position: relative;
+    margin: 20px 20px 0;
+    border-radius: 16px;
+    padding: 22px 28px;
+    background: linear-gradient(135deg, rgba(202,92,236,0.18) 0%, rgba(10,10,15,0.9) 60%);
+    border: 1px solid rgba(202,92,236,0.2);
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+    flex-shrink: 0;
+  }
+
+  .mock-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(202,92,236,0.06) 40%,
+      rgba(139,92,246,0.08) 60%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 3s ease infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  .mock-hero-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.4px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 4px;
+  }
+
+  .mock-hero-sub {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.45);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* KPI row */
+  .mock-kpi-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    padding: 14px 20px;
+    flex-shrink: 0;
+  }
+
+  .mock-kpi {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(202,92,236,0.12);
+    border-radius: 16px;
+    padding: 14px 16px;
+    backdrop-filter: blur(20px);
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mock-kpi::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .mock-kpi:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(202,92,236,0.12), 0 0 0 1px rgba(202,92,236,0.2);
+  }
+
+  .mock-kpi-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+  }
+
+  .mock-kpi-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 4px;
+  }
+
+  .mock-kpi-value {
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.4px;
+  }
+
+  .mock-kpi-value.gradient {
+    background: linear-gradient(135deg, #ca5cec, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .mock-kpi-value.plain { color: rgba(255,255,255,0.9); }
+
+  /* Charts + table row */
+  .mock-bottom-row {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 0 20px 20px;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .mock-chart-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(202,92,236,0.1);
+    border-radius: 16px;
+    padding: 16px;
+    backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .mock-chart-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(255,255,255,0.07);
+  }
+
+  .mock-card-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 14px;
+  }
+
+  .mock-chart-area {
+    flex: 1;
+    position: relative;
+    min-height: 0;
+  }
+
+  /* SVG chart */
+  .mock-chart-svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Table */
+  .mock-table {
+    width: 100%;
+    font-size: 12px;
+  }
+
+  .mock-table-head th {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: rgba(255,255,255,0.25);
+    padding: 0 8px 10px;
+    text-align: left;
+  }
+
+  .mock-table-row td {
+    padding: 8px 8px;
+    color: rgba(255,255,255,0.65);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mock-table-row:hover td {
+    background: rgba(202,92,236,0.06);
+    color: rgba(255,255,255,0.9);
+  }
+
+  .mock-table-row:last-child td { border-bottom: none; }
+
+  .mock-table-row td:first-child {
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+  }
+
+  .badge-pill {
+    display: inline-flex;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  .badge-v { background: rgba(202,92,236,0.15); color: #ca5cec; }
+  .badge-d { background: rgba(6,182,212,0.12); color: #22d3ee; }
+
+  /* ========================= LIGHT MOCKUP ========================= */
+  .mockup-shell.light-mode {
+    background: #ffffff;
+    color: #1e1e2e;
+  }
+
+  .light-mode .mock-sidebar {
+    background: rgba(255,255,255,0.6);
+    border-right-color: rgba(202,92,236,0.12);
+    backdrop-filter: blur(20px);
+  }
+
+  .light-mode .mock-logo-area {
+    border-bottom-color: rgba(202,92,236,0.1);
+  }
+
+  .light-mode .mock-logo-box {
+    background: linear-gradient(135deg, rgba(202,92,236,0.15), rgba(139,92,246,0.12));
+    border-color: rgba(202,92,236,0.3);
+  }
+
+  .light-mode .mock-nav-label {
+    color: rgba(0,0,0,0.3);
+  }
+
+  .light-mode .mock-nav-item {
+    color: rgba(0,0,0,0.45);
+  }
+
+  .light-mode .mock-nav-item.active {
+    background: rgba(202,92,236,0.08);
+    color: #a020c0;
+  }
+
+  .light-mode .mock-nav-item.active::before {
+    background: linear-gradient(180deg, #ca5cec, #8b5cf6);
+  }
+
+  .light-mode .mock-nav-item.active .mock-nav-icon {
+    background: #ca5cec;
+  }
+
+  .light-mode .mock-nav-icon {
+    background: rgba(0,0,0,0.3);
+  }
+
+  .light-mode .mock-sidebar-footer {
+    border-top-color: rgba(202,92,236,0.1);
+  }
+
+  .light-mode .mock-theme-pill {
+    border-color: rgba(202,92,236,0.2);
+    background: rgba(202,92,236,0.06);
+    color: rgba(0,0,0,0.5);
+  }
+
+  .light-mode .mock-main {
+    background: #ffffff;
+  }
+
+  .light-mode .mock-hero {
+    background: linear-gradient(135deg, rgba(202,92,236,0.12) 0%, rgba(243,232,255,0.8) 70%);
+    border-color: rgba(202,92,236,0.15);
+  }
+
+  .light-mode .mock-hero-title {
+    color: #1e1e2e;
+  }
+
+  .light-mode .mock-hero-sub {
+    color: rgba(0,0,0,0.4);
+  }
+
+  .light-mode .mock-kpi {
+    background: rgba(255,255,255,0.55);
+    border-color: rgba(202,92,236,0.12);
+    box-shadow: 0 8px 32px rgba(202,92,236,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  }
+
+  .light-mode .mock-kpi::before {
+    background: rgba(255,255,255,0.8);
+  }
+
+  .light-mode .mock-kpi:hover {
+    box-shadow: 0 12px 40px rgba(202,92,236,0.1), 0 0 0 1px rgba(202,92,236,0.18);
+  }
+
+  .light-mode .mock-kpi-label {
+    color: rgba(0,0,0,0.35);
+  }
+
+  .light-mode .mock-kpi-value.plain {
+    color: #1e1e2e;
+  }
+
+  .light-mode .mock-chart-card {
+    background: rgba(255,255,255,0.55);
+    border-color: rgba(202,92,236,0.1);
+    box-shadow: 0 8px 32px rgba(202,92,236,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  }
+
+  .light-mode .mock-chart-card::before {
+    background: rgba(255,255,255,0.85);
+  }
+
+  .light-mode .mock-card-title {
+    color: rgba(0,0,0,0.35);
+  }
+
+  .light-mode .mock-table-head th {
+    color: rgba(0,0,0,0.3);
+  }
+
+  .light-mode .mock-table-row td {
+    color: rgba(0,0,0,0.6);
+    border-bottom-color: rgba(0,0,0,0.05);
+  }
+
+  .light-mode .mock-table-row:hover td {
+    background: rgba(202,92,236,0.05);
+    color: rgba(0,0,0,0.85);
+  }
+
+  .light-mode .mock-table-row td:first-child {
+    color: rgba(0,0,0,0.8);
+  }
+
+  .light-mode .badge-v { background: rgba(202,92,236,0.1); color: #a020c0; }
+  .light-mode .badge-d { background: rgba(6,182,212,0.08); color: #0891b2; }
+
+  /* Section label at bottom */
+  .section-note {
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    text-align: center;
+    margin-top: 16px;
+    font-style: italic;
+  }
+
+  /* Confirm button */
+  .confirm-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+    justify-content: center;
+  }
+
+  .confirm-btn {
+    padding: 12px 32px;
+    border-radius: 99px;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .confirm-btn.primary {
+    background: linear-gradient(135deg, #ca5cec, #8b5cf6);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(202,92,236,0.4);
+  }
+
+  .confirm-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(202,92,236,0.5);
+  }
+
+  .confirm-btn.secondary {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.6);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+</style>
+</head>
+<body>
+
+<div class="page-title">Ad-Lab Redesign — Visual Direction Preview</div>
+<div class="page-sub">Mockup of the proposed liquid glass morphism redesign. Toggle between dark and light mode to compare.</div>
+
+<div class="toggle-row">
+  <button class="mode-btn active" onclick="showMode('dark', this)">🌙 Dark Mode</button>
+  <button class="mode-btn" onclick="showMode('light', this)">☀️ Light Mode</button>
+</div>
+
+<!-- DARK MODE MOCKUP -->
+<div class="mockup-wrapper" id="mockup-dark">
+  <div class="mockup-shell">
+
+    <!-- Sidebar -->
+    <aside class="mock-sidebar">
+      <div class="mock-logo-area">
+        <div class="mock-logo-box">A</div>
+        <div>
+          <div class="mock-logo-text">Ad-Lab</div>
+          <div class="mock-logo-sub">Affiliate Dashboard</div>
+        </div>
+      </div>
+      <nav class="mock-nav">
+        <div class="mock-nav-label">Navigation</div>
+        <div class="mock-nav-item active">
+          <div class="mock-nav-icon" style="mask: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\"><rect x=\"3\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"3\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"3\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/><rect x=\"14\" y=\"14\" width=\"7\" height=\"7\" rx=\"1\"/></svg>') center/contain no-repeat; background: #ca5cec;"></div>
+          Overview
+        </div>
+        <div class="mock-nav-item">
+          <div class="mock-nav-icon" style="background: rgba(255,255,255,0.3); border-radius: 2px;"></div>
+          Monthly Trends
+        </div>
+        <div class="mock-nav-item">
+          <div class="mock-nav-icon" style="background: rgba(255,255,255,0.3); border-radius: 50%;"></div>
+          By Client
+        </div>
+        <div class="mock-nav-item">
+          <div class="mock-nav-icon" style="background: rgba(255,255,255,0.3); border-radius: 2px;"></div>
+          Vince vs Difiano
+        </div>
+      </nav>
+      <div class="mock-sidebar-footer">
+        <div class="mock-theme-pill">
+          <span class="mock-theme-icon">🌙</span>
+          <span>Dark Mode</span>
+          <span style="margin-left:auto;font-size:10px;color:rgba(255,255,255,0.3)">●</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="mock-main">
+      <!-- Hero banner -->
+      <div class="mock-hero">
+        <div class="mock-hero-title">Welcome to Ad-Lab — your affiliate earnings at a glance.</div>
+        <div class="mock-hero-sub">All figures in USD &nbsp;·&nbsp; March 2025 – February 2026</div>
+      </div>
+
+      <!-- KPI Row -->
+      <div class="mock-kpi-row">
+        <div class="mock-kpi">
+          <div class="mock-kpi-icon" style="background: rgba(202,92,236,0.15); color: #ca5cec; font-size: 14px;">$</div>
+          <div class="mock-kpi-label">Total Earnings</div>
+          <div class="mock-kpi-value gradient">$63,897</div>
+        </div>
+        <div class="mock-kpi">
+          <div class="mock-kpi-icon" style="background: rgba(202,92,236,0.1); font-size: 12px; color: #ca5cec;">↑</div>
+          <div class="mock-kpi-label">Vince</div>
+          <div class="mock-kpi-value plain">$38,240</div>
+        </div>
+        <div class="mock-kpi">
+          <div class="mock-kpi-icon" style="background: rgba(6,182,212,0.1); font-size: 12px; color: #22d3ee;">↑</div>
+          <div class="mock-kpi-label">Difiano</div>
+          <div class="mock-kpi-value plain">$25,657</div>
+        </div>
+        <div class="mock-kpi">
+          <div class="mock-kpi-icon" style="background: rgba(34,197,94,0.1); font-size: 12px; color: #4ade80;">~</div>
+          <div class="mock-kpi-label">Avg / Month</div>
+          <div class="mock-kpi-value plain">$5,325</div>
+        </div>
+        <div class="mock-kpi">
+          <div class="mock-kpi-icon" style="background: rgba(251,146,60,0.1); font-size: 12px; color: #fb923c;">⊕</div>
+          <div class="mock-kpi-label">Total Managed</div>
+          <div class="mock-kpi-value plain">$319k</div>
+        </div>
+      </div>
+
+      <!-- Bottom row: chart + table -->
+      <div class="mock-bottom-row">
+        <!-- Chart -->
+        <div class="mock-chart-card">
+          <div class="mock-card-title">Monthly Earnings Trend</div>
+          <div class="mock-chart-area">
+            <svg viewBox="0 0 360 120" class="mock-chart-svg" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="fillV" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#ca5cec" stop-opacity="0.3"/>
+                  <stop offset="100%" stop-color="#ca5cec" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="fillD" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.2"/>
+                  <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <!-- Grid lines -->
+              <line x1="0" y1="30" x2="360" y2="30" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+              <line x1="0" y1="60" x2="360" y2="60" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+              <line x1="0" y1="90" x2="360" y2="90" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+              <!-- Vince area -->
+              <path d="M0,80 C20,75 40,50 60,45 C80,40 100,55 120,40 C140,25 160,35 180,30 C200,25 220,38 240,28 C260,18 280,32 300,20 C320,10 340,25 360,18 L360,120 L0,120 Z"
+                    fill="url(#fillV)"/>
+              <!-- Difiano area -->
+              <path d="M0,95 C20,90 40,78 60,72 C80,66 100,75 120,68 C140,61 160,70 180,62 C200,54 220,66 240,58 C260,50 280,60 300,52 C320,44 340,55 360,48 L360,120 L0,120 Z"
+                    fill="url(#fillD)"/>
+              <!-- Vince line -->
+              <path d="M0,80 C20,75 40,50 60,45 C80,40 100,55 120,40 C140,25 160,35 180,30 C200,25 220,38 240,28 C260,18 280,32 300,20 C320,10 340,25 360,18"
+                    stroke="#ca5cec" stroke-width="2" fill="none"
+                    style="filter: drop-shadow(0 0 6px rgba(202,92,236,0.6))"/>
+              <!-- Difiano line -->
+              <path d="M0,95 C20,90 40,78 60,72 C80,66 100,75 120,68 C140,61 160,70 180,62 C200,54 220,66 240,58 C260,50 280,60 300,52 C320,44 340,55 360,48"
+                    stroke="#06b6d4" stroke-width="2" fill="none"
+                    style="filter: drop-shadow(0 0 4px rgba(6,182,212,0.5))"/>
+            </svg>
+          </div>
+          <!-- Legend -->
+          <div style="display:flex;gap:16px;margin-top:8px;">
+            <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,0.45)">
+              <div style="width:10px;height:2px;background:#ca5cec;border-radius:1px;box-shadow:0 0 4px #ca5cec"></div> Vince
+            </div>
+            <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,0.45)">
+              <div style="width:10px;height:2px;background:#06b6d4;border-radius:1px;box-shadow:0 0 4px #06b6d4"></div> Difiano
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Clients table -->
+        <div class="mock-chart-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <div class="mock-card-title" style="margin-bottom:0">Top 5 Clients</div>
+            <span style="font-size:9px;text-transform:uppercase;letter-spacing:0.6px;color:rgba(255,255,255,0.2)">by earnings</span>
+          </div>
+          <table class="mock-table">
+            <thead class="mock-table-head">
+              <tr>
+                <th>Client</th>
+                <th>Affiliate</th>
+                <th style="text-align:right">Earned</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="mock-table-row">
+                <td>Luminary Co.</td>
+                <td><span class="badge-pill badge-v">Vince</span></td>
+                <td style="text-align:right">$8,420</td>
+              </tr>
+              <tr class="mock-table-row">
+                <td>Stride Media</td>
+                <td><span class="badge-pill badge-d">Difiano</span></td>
+                <td style="text-align:right">$6,880</td>
+              </tr>
+              <tr class="mock-table-row">
+                <td>Apex Digital</td>
+                <td><span class="badge-pill badge-v">Vince</span></td>
+                <td style="text-align:right">$5,340</td>
+              </tr>
+              <tr class="mock-table-row">
+                <td>NovaSpark</td>
+                <td><span class="badge-pill badge-d">Difiano</span></td>
+                <td style="text-align:right">$4,990</td>
+              </tr>
+              <tr class="mock-table-row">
+                <td>Crestline</td>
+                <td><span class="badge-pill badge-v">Vince</span></td>
+                <td style="text-align:right">$4,210</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- LIGHT MODE MOCKUP (hidden by default) -->
+<div class="mockup-wrapper" id="mockup-light" style="display:none;">
+  <div class="mockup-shell light-mode">
+
+    <!-- Sidebar -->
+    <aside class="mock-sidebar">
+      <div class="mock-logo-area">
+        <div class="mock-logo-box">A</div>
+        <div>
+          <div class="mock-logo-text">Ad-Lab</div>
+          <div class="mock-logo-sub">Affiliate Dashboard</div>
+        </div>
+      </div>
+      <nav class="mock-nav">
+        <div class="mock-nav-label">Navigation</div>
+        <div class="mock-nav-item active">
+          <div class="mock-nav-icon" style="background: #ca5cec; border-radius: 2px;"></div>
+          Overview
+        </div>
+        <div class="mock-nav-item">
+          <div class="mock-nav-icon" style="background: rgba(0,0,0,0.25); border-radius: 2px;"></div>
+          Monthly Trends
+        </div>
+        <div class="mock-nav-item">
+          <div class="mock-nav-icon" style="background: rgba(0,0,0,0.25); border-radius: 50%;"></div>
+          By Client
+        </div>
+        <div class="mock-nav-item">
+          <div class="mock-nav-icon" style="background: rgba(0,0,0,0.25); border-radius: 2px;"></div>
+          Vince vs Difiano
+        </div>
+      </nav>
+      <div class="mock-sidebar-footer">
+        <div class="mock-theme-pill">
+          <span class="mock-theme-icon">☀️</span>
+          <span>Light Mode</span>
+          <span style="margin-left:auto;font-size:10px;color:rgba(0,0,0,0.2)">●</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="mock-main">
+      <!-- Hero banner -->
+      <div class="mock-hero">
+        <div class="mock-hero-title">Welcome to Ad-Lab — your affiliate earnings at a glance.</div>
+        <div class="mock-hero-sub">All figures in USD &nbsp;·&nbsp; March 2025 – February 2026</div>
+      </div>
+
+      <!-- KPI Row -->
+      <div class="mock-kpi-row">
+        <div class="mock-kpi">
+          <div class="mock-kpi-icon" style="background: rgba(202,92,236,0.1); font-size: 14px; color: #ca5cec;">$</div>
+          <div class="mock-kpi-label">Total Earnings</div>
+          <div class="mock-kpi-value gradient">$63,897</div>
+        </div>
+        <div class="mock-kpi">
+          <div class="mock-kpi-icon" style="background: rgba(202,92,236,0.08); font-size: 12px; color: #a020c0;">↑</div>
+          <div class="mock-kpi-label">Vince</div>
+          <div class="mock-kpi-value plain" style="color:#1e1e2e">$38,240</div>
+        </div>
+        <div class="mock-kpi">
+          <div class="mock-kpi-icon" style="background: rgba(6,182,212,0.08); font-size: 12px; color: #0891b2;">↑</div>
+          <div class="mock-kpi-label">Difiano</div>
+          <div class="mock-kpi-value plain" style="color:#1e1e2e">$25,657</div>
+        </div>
+        <div class="mock-kpi">
+          <div class="mock-kpi-icon" style="background: rgba(34,197,94,0.08); font-size: 12px; color: #16a34a;">~</div>
+          <div class="mock-kpi-label">Avg / Month</div>
+          <div class="mock-kpi-value plain" style="color:#1e1e2e">$5,325</div>
+        </div>
+        <div class="mock-kpi">
+          <div class="mock-kpi-icon" style="background: rgba(234,88,12,0.08); font-size: 12px; color: #ea580c;">⊕</div>
+          <div class="mock-kpi-label">Total Managed</div>
+          <div class="mock-kpi-value plain" style="color:#1e1e2e">$319k</div>
+        </div>
+      </div>
+
+      <!-- Bottom row: chart + table -->
+      <div class="mock-bottom-row">
+        <div class="mock-chart-card">
+          <div class="mock-card-title">Monthly Earnings Trend</div>
+          <div class="mock-chart-area">
+            <svg viewBox="0 0 360 120" class="mock-chart-svg" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="fillVL" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#ca5cec" stop-opacity="0.2"/>
+                  <stop offset="100%" stop-color="#ca5cec" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="fillDL" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.15"/>
+                  <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <line x1="0" y1="30" x2="360" y2="30" stroke="rgba(0,0,0,0.04)" stroke-width="1"/>
+              <line x1="0" y1="60" x2="360" y2="60" stroke="rgba(0,0,0,0.04)" stroke-width="1"/>
+              <line x1="0" y1="90" x2="360" y2="90" stroke="rgba(0,0,0,0.04)" stroke-width="1"/>
+              <path d="M0,80 C20,75 40,50 60,45 C80,40 100,55 120,40 C140,25 160,35 180,30 C200,25 220,38 240,28 C260,18 280,32 300,20 C320,10 340,25 360,18 L360,120 L0,120 Z" fill="url(#fillVL)"/>
+              <path d="M0,95 C20,90 40,78 60,72 C80,66 100,75 120,68 C140,61 160,70 180,62 C200,54 220,66 240,58 C260,50 280,60 300,52 C320,44 340,55 360,48 L360,120 L0,120 Z" fill="url(#fillDL)"/>
+              <path d="M0,80 C20,75 40,50 60,45 C80,40 100,55 120,40 C140,25 160,35 180,30 C200,25 220,38 240,28 C260,18 280,32 300,20 C320,10 340,25 360,18" stroke="#ca5cec" stroke-width="2" fill="none"/>
+              <path d="M0,95 C20,90 40,78 60,72 C80,66 100,75 120,68 C140,61 160,70 180,62 C200,54 220,66 240,58 C260,50 280,60 300,52 C320,44 340,55 360,48" stroke="#06b6d4" stroke-width="2" fill="none"/>
+            </svg>
+          </div>
+          <div style="display:flex;gap:16px;margin-top:8px;">
+            <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(0,0,0,0.4)">
+              <div style="width:10px;height:2px;background:#ca5cec;border-radius:1px"></div> Vince
+            </div>
+            <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(0,0,0,0.4)">
+              <div style="width:10px;height:2px;background:#06b6d4;border-radius:1px"></div> Difiano
+            </div>
+          </div>
+        </div>
+
+        <div class="mock-chart-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <div class="mock-card-title" style="margin-bottom:0">Top 5 Clients</div>
+            <span style="font-size:9px;text-transform:uppercase;letter-spacing:0.6px;color:rgba(0,0,0,0.25)">by earnings</span>
+          </div>
+          <table class="mock-table">
+            <thead class="mock-table-head">
+              <tr>
+                <th>Client</th>
+                <th>Affiliate</th>
+                <th style="text-align:right">Earned</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="mock-table-row">
+                <td>Luminary Co.</td>
+                <td><span class="badge-pill badge-v">Vince</span></td>
+                <td style="text-align:right">$8,420</td>
+              </tr>
+              <tr class="mock-table-row">
+                <td>Stride Media</td>
+                <td><span class="badge-pill badge-d">Difiano</span></td>
+                <td style="text-align:right">$6,880</td>
+              </tr>
+              <tr class="mock-table-row">
+                <td>Apex Digital</td>
+                <td><span class="badge-pill badge-v">Vince</span></td>
+                <td style="text-align:right">$5,340</td>
+              </tr>
+              <tr class="mock-table-row">
+                <td>NovaSpark</td>
+                <td><span class="badge-pill badge-d">Difiano</span></td>
+                <td style="text-align:right">$4,990</td>
+              </tr>
+              <tr class="mock-table-row">
+                <td>Crestline</td>
+                <td><span class="badge-pill badge-v">Vince</span></td>
+                <td style="text-align:right">$4,210</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="section-note">This is a static mockup — interactions, real data, and animations will be in the live build.</div>
+
+<script>
+function showMode(mode, btn) {
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('mockup-dark').style.display = mode === 'dark' ? 'block' : 'none';
+  document.getElementById('mockup-light').style.display = mode === 'light' ? 'block' : 'none';
+}
+</script>
+
+</body>
+</html>

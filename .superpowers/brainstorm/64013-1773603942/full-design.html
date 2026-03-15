@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ad-Lab Redesign Preview</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, 'Segoe UI', sans-serif; background: #1a1d23; color: #fff; padding: 24px; }
+
+  .header { text-align: center; margin-bottom: 32px; }
+  .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+  .header p { font-size: 13px; color: rgba(255,255,255,0.5); }
+
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+  .panel { border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); }
+  .panel-label { padding: 10px 16px; font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; }
+  .before-label { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); }
+  .after-label { background: rgba(202,92,236,0.12); color: #ca5cec; }
+
+  /* ── BEFORE (current app) ── */
+  .before { background: #fdf6ff; padding: 16px; }
+  .b-layout { display: grid; grid-template-columns: 52px 1fr; gap: 10px; }
+  .b-sidebar { background: rgba(255,255,255,0.6); border-radius: 10px; padding: 10px 6px; display: flex; flex-direction: column; gap: 5px; align-items: center; border: 1px solid rgba(202,92,236,0.18); }
+  .b-dot { width: 30px; height: 30px; border-radius: 8px; background: rgba(202,92,236,0.08); }
+  .b-dot.active { background: rgba(202,92,236,0.2); border: 1px solid rgba(202,92,236,0.35); }
+  .b-content { display: flex; flex-direction: column; gap: 8px; }
+  .b-banner { background: linear-gradient(135deg, #ca5cec22, #8b5cf622); border: 1px solid rgba(202,92,236,0.2); border-radius: 10px; padding: 10px 12px; }
+  .b-banner-title { font-size: 12px; font-weight: 700; background: linear-gradient(135deg, #ca5cec, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .b-banner-sub { font-size: 9px; color: #94a3b8; margin-top: 2px; }
+  .b-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .b-kpi { background: rgba(255,255,255,0.55); border: 1px solid rgba(202,92,236,0.1); border-radius: 10px; padding: 9px; box-shadow: 0 4px 16px rgba(202,92,236,0.08); }
+  .b-val { font-size: 13px; font-weight: 700; color: #1e293b; }
+  .b-lbl { font-size: 9px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  /* ── AFTER (redesigned) ── */
+  .after { background: #f3f4f6; padding: 16px; }
+  .a-layout { display: grid; grid-template-columns: 148px 1fr; gap: 10px; }
+  .a-sidebar { background: #fff; border-radius: 10px; padding: 12px 10px; display: flex; flex-direction: column; gap: 3px; border: 1px solid #e2e5ec; }
+  .a-brand { font-size: 10px; font-weight: 800; color: #0f172a; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; padding: 3px 4px; }
+  .a-nav { font-size: 11px; padding: 6px 8px; border-radius: 6px; color: #64748b; font-weight: 500; }
+  .a-nav.active { background: #0f172a; color: #fff; font-weight: 600; }
+  .a-content { display: flex; flex-direction: column; gap: 8px; }
+  .a-hero { padding: 4px 2px 6px; }
+  .a-hero-title { font-size: 15px; font-weight: 800; color: #0f172a; letter-spacing: -0.01em; }
+  .a-hero-sub { font-size: 10px; color: #94a3b8; margin-top: 2px; font-weight: 400; }
+  .a-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .a-kpi { background: #fff; border-radius: 10px; padding: 9px; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04); }
+  .a-val { font-size: 13px; font-weight: 700; color: #0f172a; }
+  .a-lbl { font-size: 9px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.04em; }
+  .a-chart { background: #fff; border-radius: 10px; padding: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04); height: 50px; display: flex; align-items: flex-end; gap: 4px; }
+  .a-bar { border-radius: 3px 3px 0 0; flex: 1; }
+
+  /* dark mode panels */
+  .dark-split { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  /* DARK BEFORE */
+  .db { background: #0a0a0f; padding: 16px; }
+  .db-layout { display: grid; grid-template-columns: 52px 1fr; gap: 10px; }
+  .db-sidebar { background: rgba(255,255,255,0.04); border-radius: 10px; padding: 10px 6px; display: flex; flex-direction: column; gap: 5px; align-items: center; border: 1px solid rgba(202,92,236,0.15); }
+  .db-dot { width: 30px; height: 30px; border-radius: 8px; background: rgba(255,255,255,0.04); }
+  .db-dot.active { background: rgba(202,92,236,0.25); border: 1px solid rgba(202,92,236,0.4); }
+  .db-content { display: flex; flex-direction: column; gap: 8px; }
+  .db-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .db-kpi { background: rgba(255,255,255,0.05); border: 1px solid rgba(202,92,236,0.12); border-radius: 10px; padding: 9px; }
+  .db-val { font-size: 13px; font-weight: 700; color: #f1f5f9; }
+  .db-lbl { font-size: 9px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.04em; }
+  .db-banner { background: linear-gradient(135deg, rgba(202,92,236,0.15), rgba(139,92,246,0.12)); border: 1px solid rgba(202,92,236,0.2); border-radius: 10px; padding: 10px 12px; margin-bottom: 0; }
+  .db-banner-title { font-size: 12px; font-weight: 700; color: #ca5cec; }
+
+  /* DARK AFTER */
+  .da { background: #0d0f14; padding: 16px; }
+  .da-layout { display: grid; grid-template-columns: 148px 1fr; gap: 10px; }
+  .da-sidebar { background: #111318; border-radius: 10px; padding: 12px 10px; display: flex; flex-direction: column; gap: 3px; border: 1px solid rgba(255,255,255,0.07); }
+  .da-brand { font-size: 10px; font-weight: 800; color: #f1f5f9; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; padding: 3px 4px; }
+  .da-nav { font-size: 11px; padding: 6px 8px; border-radius: 6px; color: rgba(255,255,255,0.4); font-weight: 500; }
+  .da-nav.active { background: rgba(255,255,255,0.1); color: #f1f5f9; font-weight: 600; }
+  .da-content { display: flex; flex-direction: column; gap: 8px; }
+  .da-hero { padding: 4px 2px 6px; }
+  .da-hero-title { font-size: 15px; font-weight: 800; color: #f1f5f9; letter-spacing: -0.01em; }
+  .da-hero-sub { font-size: 10px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+  .da-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .da-kpi { background: #181c24; border-radius: 10px; padding: 9px; border: 1px solid rgba(255,255,255,0.07); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+  .da-val { font-size: 13px; font-weight: 700; color: #f1f5f9; }
+  .da-lbl { font-size: 9px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.04em; }
+  .da-chart { background: #181c24; border-radius: 10px; padding: 10px; border: 1px solid rgba(255,255,255,0.07); height: 50px; display: flex; align-items: flex-end; gap: 4px; }
+  .da-bar { border-radius: 3px 3px 0 0; flex: 1; }
+
+  .section-title { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 14px; margin-top: 8px; }
+
+  .changes-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
+  .change-item { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 14px; }
+  .change-item h4 { font-size: 12px; font-weight: 700; color: #f1f5f9; margin-bottom: 6px; }
+  .change-item ul { list-style: none; }
+  .change-item li { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.8; padding-left: 12px; position: relative; }
+  .change-item li::before { content: '→'; position: absolute; left: 0; color: #ca5cec; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Ad-Lab Dashboard — Redesign Preview</h1>
+  <p>Same data. Brand purple reserved for Vince metrics only. Everything else: slate and white.</p>
+</div>
+
+<div class="section-title">Light Mode</div>
+
+<div class="split">
+  <div class="panel">
+    <div class="panel-label before-label">Before — Current</div>
+    <div class="before">
+      <div class="b-layout">
+        <div class="b-sidebar">
+          <div class="b-dot active"></div>
+          <div class="b-dot"></div>
+          <div class="b-dot"></div>
+          <div class="b-dot"></div>
+        </div>
+        <div class="b-content">
+          <div class="b-banner">
+            <div class="b-banner-title">Welcome back</div>
+            <div class="b-banner-sub">Ad-Lab Affiliate Dashboard</div>
+          </div>
+          <div class="b-kpis">
+            <div class="b-kpi"><div class="b-val">$41,200</div><div class="b-lbl">Total</div></div>
+            <div class="b-kpi"><div class="b-val" style="color:#ca5cec">$26,100</div><div class="b-lbl">Vince</div></div>
+            <div class="b-kpi"><div class="b-val" style="color:#06b6d4">$15,100</div><div class="b-lbl">Difiano</div></div>
+          </div>
+          <div class="b-kpi" style="height:44px;display:flex;align-items:flex-end;gap:4px;padding:8px">
+            <div style="flex:1;height:40%;background:rgba(202,92,236,0.3);border-radius:3px 3px 0 0"></div>
+            <div style="flex:1;height:55%;background:rgba(202,92,236,0.3);border-radius:3px 3px 0 0"></div>
+            <div style="flex:1;height:45%;background:rgba(202,92,236,0.3);border-radius:3px 3px 0 0"></div>
+            <div style="flex:1;height:70%;background:rgba(202,92,236,0.3);border-radius:3px 3px 0 0"></div>
+            <div style="flex:1;height:85%;background:#ca5cec;border-radius:3px 3px 0 0"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-label after-label">After — Redesigned</div>
+    <div class="after">
+      <div class="a-layout">
+        <div class="a-sidebar">
+          <div class="a-brand">■ AD-LAB</div>
+          <div class="a-nav active">Dashboard</div>
+          <div class="a-nav">Trends</div>
+          <div class="a-nav">Clients</div>
+          <div class="a-nav">Compare</div>
+        </div>
+        <div class="a-content">
+          <div class="a-hero">
+            <div class="a-hero-title">Overview</div>
+            <div class="a-hero-sub">Jan 2024 – Dec 2024</div>
+          </div>
+          <div class="a-kpis">
+            <div class="a-kpi"><div class="a-val">$41,200</div><div class="a-lbl">Total</div></div>
+            <div class="a-kpi"><div class="a-val" style="color:#ca5cec">$26,100</div><div class="a-lbl">Vince</div></div>
+            <div class="a-kpi"><div class="a-val" style="color:#06b6d4">$15,100</div><div class="a-lbl">Difiano</div></div>
+          </div>
+          <div class="a-chart">
+            <div class="a-bar" style="height:40%;background:#e2e5ec"></div>
+            <div class="a-bar" style="height:55%;background:#e2e5ec"></div>
+            <div class="a-bar" style="height:45%;background:#e2e5ec"></div>
+            <div class="a-bar" style="height:70%;background:#e2e5ec"></div>
+            <div class="a-bar" style="height:85%;background:#ca5cec"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-title">Dark Mode</div>
+
+<div class="dark-split">
+  <div class="panel">
+    <div class="panel-label before-label">Before — Current Dark</div>
+    <div class="db">
+      <div class="db-layout">
+        <div class="db-sidebar">
+          <div class="db-dot active"></div>
+          <div class="db-dot"></div>
+          <div class="db-dot"></div>
+          <div class="db-dot"></div>
+        </div>
+        <div class="db-content">
+          <div class="db-banner">
+            <div class="db-banner-title">Welcome back</div>
+          </div>
+          <div class="db-kpis">
+            <div class="db-kpi"><div class="db-val">$41,200</div><div class="db-lbl">Total</div></div>
+            <div class="db-kpi"><div class="db-val" style="color:#ca5cec">$26,100</div><div class="db-lbl">Vince</div></div>
+            <div class="db-kpi"><div class="db-val" style="color:#06b6d4">$15,100</div><div class="db-lbl">Difiano</div></div>
+          </div>
+          <div class="db-kpi" style="height:44px;display:flex;align-items:flex-end;gap:4px;padding:8px;border:1px solid rgba(202,92,236,0.12);border-radius:10px">
+            <div style="flex:1;height:40%;background:rgba(202,92,236,0.25);border-radius:3px 3px 0 0"></div>
+            <div style="flex:1;height:55%;background:rgba(202,92,236,0.25);border-radius:3px 3px 0 0"></div>
+            <div style="flex:1;height:70%;background:#ca5cec;border-radius:3px 3px 0 0"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-label after-label">After — Redesigned Dark</div>
+    <div class="da">
+      <div class="da-layout">
+        <div class="da-sidebar">
+          <div class="da-brand">■ AD-LAB</div>
+          <div class="da-nav active">Dashboard</div>
+          <div class="da-nav">Trends</div>
+          <div class="da-nav">Clients</div>
+          <div class="da-nav">Compare</div>
+        </div>
+        <div class="da-content">
+          <div class="da-hero">
+            <div class="da-hero-title">Overview</div>
+            <div class="da-hero-sub">Jan 2024 – Dec 2024</div>
+          </div>
+          <div class="da-kpis">
+            <div class="da-kpi"><div class="da-val">$41,200</div><div class="da-lbl">Total</div></div>
+            <div class="da-kpi"><div class="da-val" style="color:#ca5cec">$26,100</div><div class="da-lbl">Vince</div></div>
+            <div class="da-kpi"><div class="da-val" style="color:#06b6d4">$15,100</div><div class="da-lbl">Difiano</div></div>
+          </div>
+          <div class="da-chart">
+            <div class="da-bar" style="height:40%;background:rgba(255,255,255,0.1)"></div>
+            <div class="da-bar" style="height:55%;background:rgba(255,255,255,0.1)"></div>
+            <div class="da-bar" style="height:45%;background:rgba(255,255,255,0.1)"></div>
+            <div class="da-bar" style="height:70%;background:rgba(255,255,255,0.1)"></div>
+            <div class="da-bar" style="height:85%;background:#ca5cec"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-title" style="margin-top:28px">What changes</div>
+<div class="changes-grid">
+  <div class="change-item">
+    <h4>Color Tokens</h4>
+    <ul>
+      <li>Page bg: #fdf6ff → #f3f4f6 (light) / #0d0f14 (dark)</li>
+      <li>All purple-tinted borders → neutral gray</li>
+      <li>All purple-tinted shadows → slate-based</li>
+      <li>Input bg: purple-tint → neutral gray</li>
+      <li>Purple retained only in accent-primary (Vince) & accent-secondary (Difiano)</li>
+    </ul>
+  </div>
+  <div class="change-item">
+    <h4>Sidebar</h4>
+    <ul>
+      <li>Icon-only → full text navigation labels</li>
+      <li>Active state: dark fill (#0f172a) instead of purple glow</li>
+      <li>No purple borders or backgrounds</li>
+      <li>Dark mode: #111318 bg, white/10 active state</li>
+    </ul>
+  </div>
+  <div class="change-item">
+    <h4>Cards & Surfaces</h4>
+    <ul>
+      <li>Shadows: purple-tinted → pure slate drop shadows</li>
+      <li>Borders: rgba(purple) → #e2e5ec neutral</li>
+      <li>Remove backdrop-filter blur (performance + clarity)</li>
+      <li>Consistent 10px border-radius</li>
+    </ul>
+  </div>
+  <div class="change-item">
+    <h4>Page Structure</h4>
+    <ul>
+      <li>Remove gradient welcome banner</li>
+      <li>Replace with clean page title + date range</li>
+      <li>Topbar: remove purple tint from border/shadow</li>
+      <li>Typography: tighter tracking on headings, heavier weight</li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>

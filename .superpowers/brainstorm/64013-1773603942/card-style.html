@@ -1,0 +1,147 @@
+<h2>How should the cards look?</h2>
+<p class="subtitle">Cards are the dominant surface in the dashboard. This choice sets the overall texture and depth.</p>
+
+<style>
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 24px; }
+  .card { cursor: pointer; border-radius: 12px; overflow: hidden; border: 2px solid transparent; transition: all 0.2s; }
+  .card:hover { transform: translateY(-2px); }
+  .card-image { padding: 0; }
+  .card-body { padding: 14px 16px; }
+  .card-body h3 { margin: 0 0 5px; font-size: 15px; font-weight: 600; }
+  .card-body p { margin: 0; font-size: 13px; opacity: 0.65; line-height: 1.5; }
+
+  .preview { padding: 16px; font-family: -apple-system, sans-serif; }
+
+  /* Shared kpi strip */
+  .kpi-strip { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 8px; }
+  .kpi-label { font-size: 9px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+  .kpi-val { font-size: 15px; font-weight: 700; color: #0f172a; }
+  .kpi-sub { font-size: 10px; color: #10b981; font-weight: 500; margin-top: 1px; }
+
+  .chart-row { height: 50px; display: flex; align-items: flex-end; gap: 4px; padding: 8px 10px 6px; }
+  .bar { border-radius: 3px 3px 0 0; flex: 1; }
+
+  /* A: Flat bordered */
+  .preview-a { background: #f8f9fc; }
+  .card-a { background: #fff; border: 1px solid #e2e5ec; border-radius: 10px; padding: 12px; }
+  .card-a .kpi-val { color: #0f172a; }
+
+  /* B: Elevated shadow */
+  .preview-b { background: #f3f4f6; }
+  .card-b { background: #fff; border-radius: 12px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04); }
+
+  /* C: Inset / surface-on-surface */
+  .preview-c { background: #fff; border: 1px solid #e9e9e7; border-radius: 10px; }
+  .card-c { background: #f8f9fc; border-radius: 8px; padding: 12px; border: 1px solid #eaecf0; }
+</style>
+
+<div class="cards">
+
+  <!-- A: Flat bordered -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="preview preview-a">
+        <div class="kpi-strip">
+          <div class="card-a">
+            <div class="kpi-label">Total Earned</div>
+            <div class="kpi-val">$41,200</div>
+            <div class="kpi-sub">↑ 12% vs last year</div>
+          </div>
+          <div class="card-a">
+            <div class="kpi-label">Vince</div>
+            <div class="kpi-val" style="color:#ca5cec">$26,100</div>
+            <div class="kpi-sub" style="color:#94a3b8">63% of total</div>
+          </div>
+        </div>
+        <div class="card-a" style="padding:0">
+          <div style="padding: 10px 12px 4px; font-size:10px; font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:0.05em;">Monthly Trend</div>
+          <div class="chart-row">
+            <div class="bar" style="height:40%;background:#e2e5ec"></div>
+            <div class="bar" style="height:55%;background:#e2e5ec"></div>
+            <div class="bar" style="height:48%;background:#e2e5ec"></div>
+            <div class="bar" style="height:70%;background:#e2e5ec"></div>
+            <div class="bar" style="height:60%;background:#e2e5ec"></div>
+            <div class="bar" style="height:88%;background:#ca5cec"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Flat + border</h3>
+      <p>White cards outlined with a 1px neutral border. No shadows. Crisp, structured, information-dense. Like Notion or Linear.</p>
+    </div>
+  </div>
+
+  <!-- B: Elevated shadow -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="preview preview-b">
+        <div class="kpi-strip">
+          <div class="card-b">
+            <div class="kpi-label">Total Earned</div>
+            <div class="kpi-val">$41,200</div>
+            <div class="kpi-sub">↑ 12% vs last year</div>
+          </div>
+          <div class="card-b">
+            <div class="kpi-label">Vince</div>
+            <div class="kpi-val" style="color:#ca5cec">$26,100</div>
+            <div class="kpi-sub" style="color:#94a3b8">63% of total</div>
+          </div>
+        </div>
+        <div class="card-b" style="padding:0; overflow:hidden">
+          <div style="padding: 10px 12px 4px; font-size:10px; font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:0.05em;">Monthly Trend</div>
+          <div class="chart-row">
+            <div class="bar" style="height:40%;background:#e9e9e7"></div>
+            <div class="bar" style="height:55%;background:#e9e9e7"></div>
+            <div class="bar" style="height:48%;background:#e9e9e7"></div>
+            <div class="bar" style="height:70%;background:#e9e9e7"></div>
+            <div class="bar" style="height:60%;background:#e9e9e7"></div>
+            <div class="bar" style="height:88%;background:#ca5cec"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Elevated shadow</h3>
+      <p>Cards float above the background with a soft drop shadow. Warmer gray page background. Friendly and approachable.</p>
+    </div>
+  </div>
+
+  <!-- C: Inset surface -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div class="preview preview-c">
+        <div style="padding: 12px;">
+          <div class="kpi-strip">
+            <div class="card-c">
+              <div class="kpi-label">Total Earned</div>
+              <div class="kpi-val">$41,200</div>
+              <div class="kpi-sub">↑ 12% vs last year</div>
+            </div>
+            <div class="card-c">
+              <div class="kpi-label">Vince</div>
+              <div class="kpi-val" style="color:#ca5cec">$26,100</div>
+              <div class="kpi-sub" style="color:#94a3b8">63% of total</div>
+            </div>
+          </div>
+          <div class="card-c" style="padding:0; overflow:hidden">
+            <div style="padding: 10px 12px 4px; font-size:10px; font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:0.05em;">Monthly Trend</div>
+            <div class="chart-row">
+              <div class="bar" style="height:40%;background:#dde1e9"></div>
+              <div class="bar" style="height:55%;background:#dde1e9"></div>
+              <div class="bar" style="height:48%;background:#dde1e9"></div>
+              <div class="bar" style="height:70%;background:#dde1e9"></div>
+              <div class="bar" style="height:60%;background:#dde1e9"></div>
+              <div class="bar" style="height:88%;background:#ca5cec"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Inset surface</h3>
+      <p>Page background is white; cards are slightly recessed in a light gray. Two-level depth hierarchy. Clean and modern.</p>
+    </div>
+  </div>
+
+</div>
