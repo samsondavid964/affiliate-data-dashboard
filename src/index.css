@@ -871,7 +871,7 @@ html.dark .cal-apply-btn {
   padding: 12px 14px;
   font-size: 13.5px;
   color: var(--text-secondary);
-  border-bottom: 1px solid rgba(202, 92, 236, 0.06);
+  border-bottom: 1px solid var(--border-subtle);
   font-variant-numeric: tabular-nums;
   transition: background 0.15s ease, color 0.15s ease;
 }
@@ -879,12 +879,20 @@ html.dark .cal-apply-btn {
 .data-table tr:last-child td { border-bottom: none; }
 
 .data-table tbody tr:nth-child(odd) td {
-  background: rgba(202, 92, 236, 0.02);
+  background: rgba(0, 0, 0, 0.015);
+}
+
+html.dark .data-table tbody tr:nth-child(odd) td {
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .data-table tbody tr:hover td {
-  background: rgba(202, 92, 236, 0.06);
+  background: rgba(0, 0, 0, 0.04);
   color: var(--text-primary);
+}
+
+html.dark .data-table tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .data-table td:first-child {
