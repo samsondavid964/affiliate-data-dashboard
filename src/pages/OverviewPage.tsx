@@ -75,7 +75,7 @@ export const OverviewPage: React.FC = () => {
       <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 22, flexWrap: 'wrap', gap: 12 }}>
         <div className="page-hero" style={{ marginBottom: 0 }}>
           <h1 className="page-hero-title">Affiliate Overview</h1>
-          <p className="page-hero-sub">All figures in USD · Earnings dashboard</p>
+          <p className="page-hero-sub">{startMonth ?? 'All time'}{endMonth && endMonth !== startMonth ? ` – ${endMonth}` : ''}</p>
         </div>
         <CalendarFilter
           availableMonths={availableMonths}
