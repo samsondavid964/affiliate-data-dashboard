@@ -1,0 +1,259 @@
+{
+  "name": "Affiliate Earnings — Google Sheets to Supabase",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "trigger-manual",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ─── MONTHS CONFIG ────────────────────────────────────────────────────────\n// month_index uses YYYYMM format (e.g. 202503 = March 2025, 202603 = March 2026)\n// This ensures rows can be sorted correctly across any number of future years.\n// To add future months, simply append more entries to this array.\nconst months = [\n  { name: 'March 2025',     tab: 'March',          index: 202503 },\n  { name: 'April 2025',     tab: 'April',          index: 202504 },\n  { name: 'May 2025',       tab: 'May',            index: 202505 },\n  { name: 'June 2025',      tab: 'June',           index: 202506 },\n  { name: 'July 2025',      tab: 'July',           index: 202507 },\n  { name: 'August 2025',    tab: 'August',         index: 202508 },\n  { name: 'September 2025', tab: 'September',      index: 202509 },\n  { name: 'October 2025',   tab: 'October',        index: 202510 },\n  { name: 'November 2025',  tab: 'November',       index: 202511 },\n  { name: 'December 2025',  tab: 'December',       index: 202512 },\n  { name: 'January 2026',   tab: 'January 2026',   index: 202601 },\n  { name: 'February 2026',  tab: 'February 2026',  index: 202602 },\n  // ── Add new months below as the sheets grow ──────────────────────────────\n  // { name: 'March 2026',     tab: 'March 2026',     index: 202603 },\n  // { name: 'April 2026',     tab: 'April 2026',     index: 202604 },\n];\n\nreturn months.map(m => ({ json: m }));"
+      },
+      "id": "months-config",
+      "name": "Month Config",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1edCDF4S2zYZW2nJsAO05ytGG7AkoTJNAEtxKWzr1uxs",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $json.tab }}",
+          "mode": "name"
+        },
+        "options": {
+          "headerRow": 1
+        }
+      },
+      "id": "vince-sheet-read",
+      "name": "Read Vince Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [500, 100],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "REPLACE_WITH_YOUR_GOOGLE_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1E0lNRHG3MmnsOZknSeyGrTnhT_Z6XQMn45DzvwQNrxY",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $json.tab }}",
+          "mode": "name"
+        },
+        "options": {
+          "headerRow": 1
+        }
+      },
+      "id": "difano-sheet-read",
+      "name": "Read Difiano Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [500, 500],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "REPLACE_WITH_YOUR_GOOGLE_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Transform Vince rows\nconst results = [];\nfor (const item of $input.all()) {\n  const row = item.json;\n  // Skip header/total rows\n  const clientName = row['Client Name'] || row['client_name'] || '';\n  if (!clientName || clientName.toLowerCase() === 'total' || clientName.toLowerCase() === 'client name') continue;\n\n  const parseCurrency = (val) => {\n    if (!val && val !== 0) return null;\n    const cleaned = String(val).replace(/[$,\\s]/g, '');\n    const num = parseFloat(cleaned);\n    return isNaN(num) ? null : num;\n  };\n\n  const parsePercent = (val) => {\n    if (!val && val !== 0) return 20.00;\n    const cleaned = String(val).replace(/%\\s*/g, '');\n    const num = parseFloat(cleaned);\n    return isNaN(num) ? 20.00 : num;\n  };\n\n  results.push({\n    json: {\n      affiliate: 'Vince',\n      client_name: String(clientName).trim(),\n      month: row.__monthName || 'Unknown',\n      month_index: row.__monthIndex || 0,\n      billable_usd: parseCurrency(row['Client Billable ($)'] || row['client_billable']),\n      referral_pct: parsePercent(row['Referral Fee (%)'] || row['referral_fee']),\n      amount_owed: parseCurrency(row['Amount Owed ($)'] || row['amount_owed'])\n    }\n  });\n}\nreturn results;"
+      },
+      "id": "transform-vince",
+      "name": "Transform Vince Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [800, 100]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Transform Difiano rows\nconst results = [];\nfor (const item of $input.all()) {\n  const row = item.json;\n  const clientName = row['Client Name'] || row['client_name'] || '';\n  if (!clientName || clientName.toLowerCase() === 'total' || clientName.toLowerCase() === 'client name') continue;\n\n  const parseCurrency = (val) => {\n    if (!val && val !== 0) return null;\n    const cleaned = String(val).replace(/[$,\\s]/g, '');\n    const num = parseFloat(cleaned);\n    return isNaN(num) ? null : num;\n  };\n\n  const parsePercent = (val) => {\n    if (!val && val !== 0) return 20.00;\n    const cleaned = String(val).replace(/%\\s*/g, '');\n    const num = parseFloat(cleaned);\n    return isNaN(num) ? 20.00 : num;\n  };\n\n  results.push({\n    json: {\n      affiliate: 'Difiano',\n      client_name: String(clientName).trim(),\n      month: row.__monthName || 'Unknown',\n      month_index: row.__monthIndex || 0,\n      billable_usd: parseCurrency(row['Client Billable ($)'] || row['client_billable']),\n      referral_pct: parsePercent(row['Referral Fee (%)'] || row['referral_fee']),\n      amount_owed: parseCurrency(row['Amount Owed ($)'] || row['amount_owed'])\n    }\n  });\n}\nreturn results;"
+      },
+      "id": "transform-difano",
+      "name": "Transform Difiano Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [800, 500]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Inject month metadata into each row before shipping to Sheets\n// This runs BEFORE each sheet read; we relay the month info through the items\n// NOTE: Because n8n Google Sheets node reads per-tab, we iterate months above\n// and each sheet read returns rows; we need to tag them with month info.\n// This code node merges the month context from upstream into sheet rows.\n\n// The month info comes from the 'Month Config' node via $('Month Config').all()\n// For each batch, we pass both datasets together.\nconst monthItems = $('Month Config').all();\nconst sheetItems = $input.all();\n\nconst mergedResults = [];\nfor (let i = 0; i < sheetItems.length; i++) {\n  const sheetRow = sheetItems[i].json;\n  // Find which month this item corresponds to\n  // n8n loops the sheet read for each month iteration\n  // We use pairedItem index to match\n  const monthItem = monthItems[sheetItems[i].pairedItem?.item ?? 0]?.json;\n  mergedResults.push({\n    json: {\n      ...sheetRow,\n      __monthName: monthItem?.name,\n      __monthIndex: monthItem?.index\n    }\n  });\n}\nreturn mergedResults;"
+      },
+      "id": "inject-month-vince",
+      "name": "Inject Month (Vince)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [650, 100]
+    },
+    {
+      "parameters": {
+        "jsCode": "const monthItems = $('Month Config').all();\nconst sheetItems = $input.all();\n\nconst mergedResults = [];\nfor (let i = 0; i < sheetItems.length; i++) {\n  const sheetRow = sheetItems[i].json;\n  const monthItem = monthItems[sheetItems[i].pairedItem?.item ?? 0]?.json;\n  mergedResults.push({\n    json: {\n      ...sheetRow,\n      __monthName: monthItem?.name,\n      __monthIndex: monthItem?.index\n    }\n  });\n}\nreturn mergedResults;"
+      },
+      "id": "inject-month-difano",
+      "name": "Inject Month (Difiano)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [650, 500]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $vars.SUPABASE_URL }}/rest/v1/affiliate_earnings",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $vars.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $vars.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" },
+            {
+              "name": "Prefer",
+              "value": "resolution=merge-duplicates,return=representation"
+            }
+          ]
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "on_conflict",
+              "value": "affiliate,client_name,month"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($input.all().map(i => i.json)) }}",
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 50
+            }
+          }
+        }
+      },
+      "id": "upsert-vince-http",
+      "name": "Upsert Vince → Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1100, 100],
+      "notes": "Calls Supabase REST API directly.\nSet SUPABASE_URL and SUPABASE_SERVICE_KEY in n8n Variables (Settings > Variables)\nor replace the expressions with hardcoded values.\nUSE SERVICE ROLE KEY (not anon key) for write access."
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $vars.SUPABASE_URL }}/rest/v1/affiliate_earnings",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "apikey", "value": "={{ $vars.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Authorization", "value": "=Bearer {{ $vars.SUPABASE_SERVICE_KEY }}" },
+            { "name": "Content-Type", "value": "application/json" },
+            {
+              "name": "Prefer",
+              "value": "resolution=merge-duplicates,return=representation"
+            }
+          ]
+        },
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "on_conflict",
+              "value": "affiliate,client_name,month"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($input.all().map(i => i.json)) }}",
+        "options": {
+          "batching": {
+            "batch": {
+              "batchSize": 50
+            }
+          }
+        }
+      },
+      "id": "upsert-difano-http",
+      "name": "Upsert Difiano → Supabase",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1100, 500],
+      "notes": "Calls Supabase REST API directly.\nSet SUPABASE_URL and SUPABASE_SERVICE_KEY in n8n Variables (Settings > Variables)\nor replace the expressions with hardcoded values.\nUSE SERVICE ROLE KEY (not anon key) for write access."
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [{ "node": "Month Config", "type": "main", "index": 0 }]
+      ]
+    },
+    "Month Config": {
+      "main": [
+        [
+          { "node": "Read Vince Sheet", "type": "main", "index": 0 },
+          { "node": "Read Difiano Sheet", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Read Vince Sheet": {
+      "main": [
+        [{ "node": "Inject Month (Vince)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Read Difiano Sheet": {
+      "main": [
+        [{ "node": "Inject Month (Difiano)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Inject Month (Vince)": {
+      "main": [
+        [{ "node": "Transform Vince Data", "type": "main", "index": 0 }]
+      ]
+    },
+    "Inject Month (Difiano)": {
+      "main": [
+        [{ "node": "Transform Difiano Data", "type": "main", "index": 0 }]
+      ]
+    },
+    "Transform Vince Data": {
+      "main": [
+        [{ "node": "Upsert Vince → Supabase", "type": "main", "index": 0 }]
+      ]
+    },
+    "Transform Difiano Data": {
+      "main": [
+        [{ "node": "Upsert Difiano → Supabase", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": true,
+    "saveManualExecutions": true
+  },
+  "meta": {
+    "description": "Migrates affiliate earnings data from two Google Sheets (Vince + Difiano) into the Supabase affiliate_earnings table. Reads all monthly tabs, cleans and transforms data, then upserts into Supabase via the REST API.",
+    "notes": "SETUP REQUIRED:\n1. In n8n go to Settings > Variables and add:\n   - SUPABASE_URL = https://xxxx.supabase.co\n   - SUPABASE_SERVICE_KEY = your service role key (NOT anon key)\n   OR: open each HTTP Request node and hardcode the URL and key directly.\n2. Set your Google Sheets OAuth2 credential on the two Read sheet nodes.\n3. Run schema.sql in Supabase SQL Editor first.\n4. Click 'Execute Workflow' — processes all months for both affiliates.\n5. Re-run anytime to sync updates (upsert is idempotent)."
+  }
+}
