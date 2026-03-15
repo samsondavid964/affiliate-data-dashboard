@@ -159,8 +159,6 @@ body {
   width: var(--sidebar-width);
   min-height: 100vh;
   background: var(--bg-sidebar);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
   box-shadow: var(--shadow-sidebar);
   display: flex;
   flex-direction: column;
@@ -169,11 +167,6 @@ body {
   top: 0;
   z-index: 100;
   transition: background-color var(--transition-slow), box-shadow var(--transition-slow);
-}
-
-html.dark .sidebar {
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
 }
 
 .sidebar-logo {
@@ -208,7 +201,7 @@ html.dark .sidebar {
 .logo-text {
   font-size: 16px;
   font-weight: 800;
-  color: var(--accent-primary);
+  color: var(--text-primary);
   letter-spacing: -0.4px;
   transition: color var(--transition-slow);
 }
@@ -259,43 +252,27 @@ html.dark .sidebar {
 }
 
 .nav-item:hover {
-  background: rgba(202, 92, 236, 0.06);
-  color: var(--accent-primary);
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--text-primary);
+}
+
+html.dark .nav-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
 }
 
 .nav-item.active {
-  background: rgba(202, 92, 236, 0.10);
-  color: var(--accent-primary);
+  background: #0f172a;
+  color: #ffffff;
   font-weight: 600;
 }
 
-.nav-item.active::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 3px;
-  height: 20px;
-  background: linear-gradient(180deg, var(--accent-primary), #8b5cf6);
-  border-radius: 0 3px 3px 0;
+html.dark .nav-item.active {
+  background: rgba(255, 255, 255, 0.10);
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
-.nav-item::after {
-  content: '';
-  position: absolute;
-  bottom: 6px;
-  left: 12px;
-  width: calc(100% - 24px);
-  height: 1px;
-  background: var(--accent-primary);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 0.2s ease;
-}
-
-.nav-item:hover::after { transform: scaleX(1); }
-.nav-item.active::after { transform: scaleX(0); }
 
 .nav-item .nav-icon {
   width: 18px;
