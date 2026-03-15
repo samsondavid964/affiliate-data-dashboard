@@ -6,16 +6,16 @@
 :root,
 html.light {
   --bg-primary: #ffffff;
-  --bg-secondary: #fdf6ff;
-  --bg-card: rgba(255, 255, 255, 0.55);
-  --bg-card-hover: rgba(255, 255, 255, 0.75);
-  --bg-glass: rgba(255, 255, 255, 0.55);
-  --bg-sidebar: rgba(255, 255, 255, 0.6);
-  --bg-input: rgba(202, 92, 236, 0.06);
+  --bg-secondary: #f3f4f6;
+  --bg-card: #ffffff;
+  --bg-card-hover: #ffffff;
+  --bg-glass: #ffffff;
+  --bg-sidebar: #ffffff;
+  --bg-input: #f3f4f6;
 
-  --border-subtle: rgba(202, 92, 236, 0.10);
-  --border-medium: rgba(202, 92, 236, 0.18);
-  --border-accent: rgba(202, 92, 236, 0.25);
+  --border-subtle: #e9eaec;
+  --border-medium: #dde0e6;
+  --border-accent: #cbd0db;
 
   --accent-primary: #ca5cec;
   --accent-primary-light: rgba(202, 92, 236, 0.10);
@@ -39,11 +39,11 @@ html.light {
   --text-secondary: #475569;
   --text-muted: #94a3b8;
 
-  --shadow-card: 0 8px 32px rgba(202, 92, 236, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-card-hover: 0 12px 40px rgba(202, 92, 236, 0.14), 0 2px 8px rgba(0, 0, 0, 0.06);
-  --shadow-accent: 0 4px 24px rgba(202, 92, 236, 0.25);
-  --shadow-sidebar: 1px 0 0 rgba(202, 92, 236, 0.08);
-  --shadow-topbar: 0 1px 0 rgba(202, 92, 236, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.05);
+  --shadow-card-hover: 0 2px 8px rgba(0, 0, 0, 0.09), 0 8px 24px rgba(0, 0, 0, 0.07);
+  --shadow-accent: 0 4px 24px rgba(0, 0, 0, 0.12);
+  --shadow-sidebar: 0 0 0 1px #e2e5ec;
+  --shadow-topbar: 0 1px 0 #e2e5ec, 0 2px 8px rgba(0, 0, 0, 0.04);
 
   --sidebar-width: 248px;
   --header-height: 68px;
@@ -56,9 +56,9 @@ html.light {
   /* Chart-specific */
   --chart-grid: rgba(0, 0, 0, 0.05);
   --chart-axis-tick: #94a3b8;
-  --chart-tooltip-bg: rgba(255, 255, 255, 0.95);
-  --chart-tooltip-border: rgba(202, 92, 236, 0.15);
-  --chart-tooltip-shadow: 0 8px 32px rgba(202, 92, 236, 0.12);
+  --chart-tooltip-bg: #ffffff;
+  --chart-tooltip-border: #dde0e6;
+  --chart-tooltip-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
 }
 
 /* =============================================
@@ -141,8 +141,8 @@ body {
 /* Scrollbar */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(202, 92, 236, 0.4); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: #ca5cec; }
+::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.35); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(100, 116, 139, 0.6); }
 
 /* =============================================
    LAYOUT
