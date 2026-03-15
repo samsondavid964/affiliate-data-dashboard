@@ -479,7 +479,6 @@ html.dark .theme-toggle-btn:hover {
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  opacity: 0.6;
   transition: color var(--transition-slow);
 }
 
