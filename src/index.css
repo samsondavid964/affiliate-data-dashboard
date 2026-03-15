@@ -368,9 +368,7 @@ html.dark .theme-toggle-btn:hover {
    ============================================= */
 .topbar {
   height: var(--header-height);
-  background: var(--bg-glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: var(--bg-primary);
   border-bottom: 1px solid var(--border-subtle);
   box-shadow: var(--shadow-topbar);
   display: flex;
