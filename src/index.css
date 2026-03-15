@@ -605,10 +605,7 @@ html.dark .kpi-icon-wrap.total   { background: rgba(16, 185, 129, 0.14); }
   letter-spacing: -0.8px;
   line-height: 1.2;
   font-variant-numeric: tabular-nums;
-  background: var(--gradient-brand);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--accent-green);
 }
 
 .kpi-sub {
@@ -670,7 +667,7 @@ html.dark .calendar-trigger-btn:hover {
 }
 
 .calendar-trigger-btn .cal-icon {
-  color: var(--accent-primary);
+  color: var(--text-secondary);
   flex-shrink: 0;
 }
 
@@ -1065,7 +1062,7 @@ html.dark .affiliate-btn.active-difiano {
   width: 32px;
   height: 32px;
   border: 3px solid var(--border-subtle);
-  border-top-color: var(--accent-primary);
+  border-top-color: var(--text-secondary);
   border-radius: 50%;
   animation: spin 0.75s linear infinite;
 }
