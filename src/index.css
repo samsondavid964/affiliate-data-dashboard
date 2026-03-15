@@ -248,7 +248,6 @@ body {
   background: none;
   width: 100%;
   text-align: left;
-  position: relative;
 }
 
 .nav-item:hover {
@@ -272,7 +271,6 @@ html.dark .nav-item.active {
   color: var(--text-primary);
   font-weight: 600;
 }
-
 
 .nav-item .nav-icon {
   width: 18px;
@@ -319,8 +317,8 @@ html.dark .nav-item.active {
 
 html.dark .theme-toggle-btn:hover {
   background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
 }
-
 
 .theme-toggle-track {
   margin-left: auto;
