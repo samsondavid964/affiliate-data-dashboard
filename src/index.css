@@ -312,14 +312,15 @@ html.dark .nav-item.active {
 }
 
 .theme-toggle-btn:hover {
-  border-color: var(--accent-primary);
-  color: var(--accent-primary);
-  background: var(--accent-primary-light);
+  border-color: var(--border-medium);
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.04);
 }
 
-html.dark .theme-toggle-btn {
-  box-shadow: 0 0 20px rgba(202, 92, 236, 0.12);
+html.dark .theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
 }
+
 
 .theme-toggle-track {
   margin-left: auto;
