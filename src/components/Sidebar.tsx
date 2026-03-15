@@ -31,7 +31,7 @@ export const Sidebar: React.FC = () => {
             <img src={logoSrc} alt="Ad-Lab Logo" />
           </div>
           <div>
-            <div className="logo-text" style={{ color: '#ca5cec' }}>Ad-Lab</div>
+            <div className="logo-text">Ad-Lab</div>
             <div className="logo-sub">Affiliate Dashboard</div>
           </div>
         </div>
