@@ -91,7 +91,7 @@ export const ComparisonPage: React.FC = () => {
                 initial={{ width: 0 }}
                 animate={{ width: `${barPercV}%` }}
                 transition={{ duration: 1.1, delay: 0.3, ease: 'easeOut' }}
-                style={{ background: 'linear-gradient(90deg, #6366f1, #8b5cf6)' }}
+                style={{ background: 'linear-gradient(90deg, #ca5cec, #8b5cf6)' }}
               />
             </div>
           </div>

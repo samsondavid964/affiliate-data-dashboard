@@ -45,7 +45,7 @@ export const KPICard: React.FC<KPICardProps> = ({
         setDisplay(isCurrency ? formatCurrency(v) : String(Math.round(v))),
     })
     return controls.stop
-  }, [value, isCurrency])
+  }, [value, isCurrency, motionVal])
 
   const isUp = trend && trend.value >= 0
   const isGradient = variant === 'total'
