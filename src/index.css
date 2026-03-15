@@ -558,7 +558,7 @@ html.dark .kpi-card::before {
 
 html.dark .kpi-icon-wrap.vince   { background: rgba(202, 92, 236, 0.15); }
 html.dark .kpi-icon-wrap.difiano { background: rgba(6, 182, 212, 0.14); }
-html.dark .kpi-icon-wrap.total   { background: rgba(202, 92, 236, 0.14); }
+html.dark .kpi-icon-wrap.total   { background: rgba(16, 185, 129, 0.14); }
 
 .kpi-trend {
   display: inline-flex;
