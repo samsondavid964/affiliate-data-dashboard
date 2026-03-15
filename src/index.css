@@ -660,9 +660,14 @@ html.dark .kpi-icon-wrap.total   { background: rgba(16, 185, 129, 0.14); }
 }
 
 .calendar-trigger-btn:hover {
-  border-color: var(--accent-primary);
-  color: var(--accent-primary);
-  background: var(--accent-primary-light);
+  border-color: var(--border-medium);
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+html.dark .calendar-trigger-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
 }
 
 .calendar-trigger-btn .cal-icon {
@@ -705,7 +710,7 @@ html.dark .kpi-icon-wrap.total   { background: rgba(16, 185, 129, 0.14); }
 .calendar-reset-btn {
   font-size: 12px;
   font-weight: 600;
-  color: var(--accent-primary);
+  color: var(--text-secondary);
   background: none;
   border: none;
   cursor: pointer;
@@ -716,7 +721,8 @@ html.dark .kpi-icon-wrap.total   { background: rgba(16, 185, 129, 0.14); }
 }
 
 .calendar-reset-btn:hover {
-  background: var(--accent-primary-light);
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text-primary);
 }
 
 .calendar-year-row {
@@ -762,16 +768,27 @@ html.dark .kpi-icon-wrap.total   { background: rgba(16, 185, 129, 0.14); }
 }
 
 .calendar-month-btn.selected {
-  background: linear-gradient(135deg, #ca5cec, #8b5cf6);
+  background: #0f172a;
   color: #fff;
-  border-color: #ca5cec;
+  border-color: #0f172a;
   font-weight: 600;
 }
 
+html.dark .calendar-month-btn.selected {
+  background: rgba(255, 255, 255, 0.15);
+  color: #f1f5f9;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
 .calendar-month-btn.in-range {
-  background: rgba(202, 92, 236, 0.10);
-  color: #ca5cec;
+  background: rgba(15, 23, 42, 0.07);
+  color: var(--text-primary);
   border-color: transparent;
+}
+
+html.dark .calendar-month-btn.in-range {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text-primary);
 }
 
 .calendar-month-btn:disabled {
@@ -799,14 +816,19 @@ html.dark .kpi-icon-wrap.total   { background: rgba(16, 185, 129, 0.14); }
   padding: 7px 16px;
   border-radius: var(--border-radius-xs);
   border: none;
-  background: linear-gradient(135deg, #ca5cec, #8b5cf6);
+  background: #0f172a;
   color: #fff;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
   transition: opacity var(--transition);
-  box-shadow: 0 2px 12px rgba(202, 92, 236, 0.3);
+  box-shadow: none;
+}
+
+html.dark .cal-apply-btn {
+  background: rgba(255, 255, 255, 0.12);
+  color: #f1f5f9;
 }
 
 .cal-apply-btn:hover { opacity: 0.88; }
