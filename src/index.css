@@ -472,7 +472,7 @@ html.dark .page-hero-title {
   box-shadow: var(--shadow-card);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  transition: all var(--transition);
+  transition: box-shadow var(--transition), border-color var(--transition), transform var(--transition);
 }
 
 .card:hover {
@@ -516,7 +516,7 @@ html.dark .page-hero-title {
   overflow: hidden;
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  transition: all var(--transition);
+  transition: box-shadow var(--transition), border-color var(--transition), transform var(--transition);
   cursor: default;
 }
 
