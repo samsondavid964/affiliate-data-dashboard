@@ -585,13 +585,14 @@ html.dark .kpi-card::before {
   border-radius: 12px;
 }
 
-.kpi-icon-wrap.vince   { background: rgba(99, 102, 241, 0.12); color: var(--accent-primary); }
-.kpi-icon-wrap.difiano { background: rgba(14, 165, 233, 0.12); color: var(--accent-secondary); }
-.kpi-icon-wrap.total   { background: var(--accent-green-light); color: var(--accent-green); }
+.kpi-icon-wrap.vince   { background: rgba(202, 92, 236, 0.12); color: #ca5cec; }
+.kpi-icon-wrap.difiano { background: rgba(6, 182, 212, 0.12);  color: #06b6d4; }
+.kpi-icon-wrap.total   { background: rgba(202, 92, 236, 0.10); color: #ca5cec; }
 .kpi-icon-wrap.neutral { background: var(--accent-orange-light); color: var(--accent-orange); }
 
-html.dark .kpi-icon-wrap.vince   { background: rgba(129, 140, 248, 0.14); }
-html.dark .kpi-icon-wrap.difiano { background: rgba(56, 189, 248, 0.12); }
+html.dark .kpi-icon-wrap.vince   { background: rgba(202, 92, 236, 0.15); }
+html.dark .kpi-icon-wrap.difiano { background: rgba(6, 182, 212, 0.14); }
+html.dark .kpi-icon-wrap.total   { background: rgba(202, 92, 236, 0.14); }
 
 .kpi-trend {
   display: inline-flex;
@@ -614,21 +615,37 @@ html.dark .kpi-icon-wrap.difiano { background: rgba(56, 189, 248, 0.12); }
 }
 
 .kpi-label {
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 11px;
+  font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.8px;
+  opacity: 0.6;
   transition: color var(--transition-slow);
 }
 
 .kpi-value {
+  font-family: 'Outfit', sans-serif;
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.8px;
   line-height: 1.2;
+  font-variant-numeric: tabular-nums;
   transition: color var(--transition-slow);
+}
+
+.kpi-value-gradient {
+  font-family: 'Outfit', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(135deg, #ca5cec, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .kpi-sub {
