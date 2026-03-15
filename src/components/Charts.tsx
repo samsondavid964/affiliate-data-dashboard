@@ -79,12 +79,12 @@ export const EarningsAreaChart: React.FC<EarningsChartProps> = ({ data }) => {
         <ComposedChart data={chartData} margin={{ top: 8, right: 8, left: 8, bottom: 4 }}>
           <defs>
             <linearGradient id="vinceGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="2%"  stopColor="#6366f1" stopOpacity={0.28} />
-              <stop offset="96%" stopColor="#6366f1" stopOpacity={0.01} />
+              <stop offset="2%"  stopColor="#ca5cec" stopOpacity={0.20} />
+              <stop offset="96%" stopColor="#ca5cec" stopOpacity={0} />
             </linearGradient>
             <linearGradient id="difanoGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="2%"  stopColor="#0ea5e9" stopOpacity={0.22} />
-              <stop offset="96%" stopColor="#0ea5e9" stopOpacity={0.01} />
+              <stop offset="2%"  stopColor="#06b6d4" stopOpacity={0.20} />
+              <stop offset="96%" stopColor="#06b6d4" stopOpacity={0} />
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 5" stroke="var(--chart-grid)" vertical={false} />
@@ -111,20 +111,20 @@ export const EarningsAreaChart: React.FC<EarningsChartProps> = ({ data }) => {
           <Area
             type="monotone"
             dataKey="Vince"
-            stroke="#6366f1"
+            stroke="#ca5cec"
             strokeWidth={2.5}
             fill="url(#vinceGrad)"
-            dot={{ fill: '#6366f1', r: 3, strokeWidth: 0 }}
-            activeDot={{ r: 5, fill: '#6366f1', strokeWidth: 2, stroke: '#fff' }}
+            dot={{ fill: '#ca5cec', r: 3, strokeWidth: 0 }}
+            activeDot={{ r: 5, fill: '#ca5cec', strokeWidth: 2, stroke: '#fff' }}
           />
           <Area
             type="monotone"
             dataKey="Difiano"
-            stroke="#0ea5e9"
+            stroke="#06b6d4"
             strokeWidth={2.5}
             fill="url(#difanoGrad)"
-            dot={{ fill: '#0ea5e9', r: 3, strokeWidth: 0 }}
-            activeDot={{ r: 5, fill: '#0ea5e9', strokeWidth: 2, stroke: '#fff' }}
+            dot={{ fill: '#06b6d4', r: 3, strokeWidth: 0 }}
+            activeDot={{ r: 5, fill: '#06b6d4', strokeWidth: 2, stroke: '#fff' }}
           />
         </ComposedChart>
       </ResponsiveContainer>
@@ -170,8 +170,8 @@ export const EarningsBarChart: React.FC<EarningsChartProps> = ({ data }) => {
             iconType="circle"
             iconSize={8}
           />
-          <Bar dataKey="Vince"   fill="#6366f1" radius={[5, 5, 0, 0]} maxBarSize={28} opacity={0.92} />
-          <Bar dataKey="Difiano" fill="#0ea5e9" radius={[5, 5, 0, 0]} maxBarSize={28} opacity={0.88} />
+          <Bar dataKey="Vince"   fill="#ca5cec" radius={[5, 5, 0, 0]} maxBarSize={28} opacity={0.92} />
+          <Bar dataKey="Difiano" fill="#06b6d4" radius={[5, 5, 0, 0]} maxBarSize={28} opacity={0.88} />
         </ComposedChart>
       </ResponsiveContainer>
     </motion.div>
@@ -196,8 +196,8 @@ export const EarningsLineChart: React.FC<{ data: MonthlyTotal[] }> = ({ data }) 
         <LineChart data={chartData} margin={{ top: 5, right: 8, left: 5, bottom: 4 }}>
           <defs>
             <linearGradient id="totalLineGrad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%"   stopColor="#6366f1" />
-              <stop offset="50%"  stopColor="#0ea5e9" />
+              <stop offset="0%"   stopColor="#ca5cec" />
+              <stop offset="50%"  stopColor="#06b6d4" />
               <stop offset="100%" stopColor="#10b981" />
             </linearGradient>
           </defs>
