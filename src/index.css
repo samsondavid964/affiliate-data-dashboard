@@ -436,19 +436,9 @@ html.dark .theme-toggle-btn:hover {
   font-family: 'Outfit', sans-serif;
   font-size: 26px;
   font-weight: 800;
-  background: var(--gradient-heading);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-primary);
   letter-spacing: -0.6px;
   line-height: 1.2;
-}
-
-html.dark .page-hero-title {
-  background: var(--gradient-heading);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .page-hero-sub {
@@ -457,69 +447,6 @@ html.dark .page-hero-title {
   margin-top: 5px;
   font-weight: 400;
   transition: color var(--transition-slow);
-}
-
-/* =============================================
-   WELCOME BANNER
-   ============================================= */
-.welcome-banner {
-  border-radius: 16px;
-  padding: 24px 28px;
-  margin-bottom: 24px;
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(202, 92, 236, 0.15);
-}
-
-html.light .welcome-banner,
-:root .welcome-banner {
-  background: linear-gradient(135deg, rgba(202, 92, 236, 0.12) 0%, rgba(243, 232, 255, 0.8) 100%);
-}
-
-html.dark .welcome-banner {
-  background: linear-gradient(135deg, rgba(202, 92, 236, 0.18) 0%, rgba(10, 10, 15, 0.9) 60%);
-}
-
-.welcome-banner::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(202, 92, 236, 0.07) 40%,
-    rgba(139, 92, 246, 0.09) 60%,
-    transparent 100%
-  );
-  background-size: 200% 100%;
-  animation: banner-shimmer 3s ease infinite;
-  pointer-events: none;
-}
-
-@keyframes banner-shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position:  200% 0; }
-}
-
-.welcome-banner-title {
-  font-family: 'Outfit', sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.3px;
-  position: relative;
-  z-index: 1;
-  margin-bottom: 4px;
-}
-
-html.light .welcome-banner-title,
-:root .welcome-banner-title { color: #1e1e2e; }
-html.dark  .welcome-banner-title { color: #ffffff; }
-
-.welcome-banner-sub {
-  font-size: 13px;
-  position: relative;
-  z-index: 1;
-  color: var(--text-muted);
 }
 
 /* =============================================

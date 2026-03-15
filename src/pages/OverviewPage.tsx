@@ -71,12 +71,6 @@ export const OverviewPage: React.FC = () => {
 
   return (
     <div>
-      {/* Welcome Banner */}
-      <div className="welcome-banner">
-        <h2 className="welcome-banner-title">Welcome to Ad-Lab — your affiliate earnings at a glance.</h2>
-        <p className="welcome-banner-sub">All figures in USD · Earnings dashboard</p>
-      </div>
-
       {/* Hero + Calendar */}
       <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 22, flexWrap: 'wrap', gap: 12 }}>
         <div className="page-hero" style={{ marginBottom: 0 }}>
