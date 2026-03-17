@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { fetchAllEarnings, computeMonthlyTotals, formatCurrency, deriveMonths } from '../lib/data'
+import { fetchAllEarnings, fetchEarningsByAffiliate, computeMonthlyTotals, formatCurrency, deriveMonths } from '../lib/data'
+import { useAuth } from '../AuthContext'
 import type { EarningRow, MonthlyTotal } from '../types'
 import { EarningsBarChart } from '../components/Charts'
 import { MonthlyEarningsTable } from '../components/Tables'
@@ -13,6 +14,7 @@ function parseMonthNum(label: string) {
 }
 
 export const TrendsPage: React.FC = () => {
+  const { role } = useAuth()
   const [rows,    setRows]    = useState<EarningRow[]>([])
   const [loading, setLoading] = useState(true)
   const [startMonth, setStartMonth] = useState<string | null>(null)
@@ -20,11 +22,15 @@ export const TrendsPage: React.FC = () => {
   const [drillMonth, setDrillMonth] = useState<string | null>(null)
 
   useEffect(() => {
-    fetchAllEarnings().then(data => {
+    const fetchAction = role === 'Ad-Lab' 
+      ? fetchAllEarnings() 
+      : fetchEarningsByAffiliate(role as string)
+
+    fetchAction.then(data => {
       setRows(data)
       setLoading(false)
     })
-  }, [])
+  }, [role])
 
   const availableMonths = useMemo(() => deriveMonths(rows), [rows])
 
@@ -54,7 +60,11 @@ export const TrendsPage: React.FC = () => {
       <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 22, flexWrap: 'wrap', gap: 12 }}>
         <div className="page-hero" style={{ marginBottom: 0 }}>
           <h1 className="page-hero-title">Monthly Trends</h1>
-          <p className="page-hero-sub">Month-by-month breakdown for Vince and Difiano</p>
+          <p className="page-hero-sub">
+            {role === 'Ad-Lab' 
+              ? 'Month-by-month breakdown for Vince and Difiano' 
+              : 'Your month-by-month earnings breakdown'}
+          </p>
         </div>
         <CalendarFilter
           availableMonths={availableMonths}
@@ -143,10 +153,10 @@ export const TrendsPage: React.FC = () => {
               <thead>
                 <tr>
                   <th>Month</th>
-                  <th>Vince</th>
-                  <th>Difiano</th>
-                  <th>Total</th>
-                  <th>Leading</th>
+                  {(role === 'Ad-Lab' || role === 'Vince') && <th>{role === 'Ad-Lab' ? 'Vince' : 'Earnings'}</th>}
+                  {(role === 'Ad-Lab' || role === 'Difiano') && <th>{role === 'Ad-Lab' ? 'Difiano' : 'Earnings'}</th>}
+                  {role === 'Ad-Lab' && <th>Total</th>}
+                  {role === 'Ad-Lab' && <th>Leading</th>}
                 </tr>
               </thead>
               <tbody>
@@ -160,14 +170,22 @@ export const TrendsPage: React.FC = () => {
                     onClick={() => setDrillMonth(m.month)}
                   >
                     <td style={{ fontWeight: 600 }}>{m.month}</td>
-                    <td style={{ color: 'var(--accent-primary)', fontWeight: 600 }}>{formatCurrency(m.vince)}</td>
-                    <td style={{ color: 'var(--accent-secondary)', fontWeight: 600 }}>{formatCurrency(m.difiano)}</td>
-                    <td style={{ color: 'var(--accent-green)', fontWeight: 700 }}>{formatCurrency(m.total)}</td>
-                    <td>
-                      <span className={`badge badge-${m.vince >= m.difiano ? 'vince' : 'difiano'}`}>
-                        {m.vince >= m.difiano ? 'Vince' : 'Difiano'}
-                      </span>
-                    </td>
+                    {(role === 'Ad-Lab' || role === 'Vince') && (
+                      <td style={{ color: 'var(--accent-primary)', fontWeight: 600 }}>{formatCurrency(m.vince)}</td>
+                    )}
+                    {(role === 'Ad-Lab' || role === 'Difiano') && (
+                      <td style={{ color: 'var(--accent-secondary)', fontWeight: 600 }}>{formatCurrency(m.difiano)}</td>
+                    )}
+                    {role === 'Ad-Lab' && (
+                      <td style={{ color: 'var(--accent-green)', fontWeight: 700 }}>{formatCurrency(m.total)}</td>
+                    )}
+                    {role === 'Ad-Lab' && (
+                      <td>
+                        <span className={`badge badge-${m.vince >= m.difiano ? 'vince' : 'difiano'}`}>
+                          {m.vince >= m.difiano ? 'Vince' : 'Difiano'}
+                        </span>
+                      </td>
+                    )}
                   </motion.tr>
                 ))}
               </tbody>

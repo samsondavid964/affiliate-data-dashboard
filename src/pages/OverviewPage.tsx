@@ -2,15 +2,17 @@ import React, { useEffect, useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { DollarSign, TrendingUp, Users, Award } from 'lucide-react'
 import { KPICard } from '../components/KPICard'
-import { EarningsAreaChart, EarningsLineChart } from '../components/Charts'
+import { EarningsAreaChart, EarningsLineChart, EarningsDonutChart } from '../components/Charts'
 import { ClientTable } from '../components/Tables'
 import { AffiliateToggle, CalendarFilter } from '../components/Filters'
 import {
   fetchAllEarnings,
+  fetchEarningsByAffiliate,
   computeMonthlyTotals,
   computeTopClients,
   deriveMonths,
 } from '../lib/data'
+import { useAuth } from '../AuthContext'
 import type { EarningRow, MonthlyTotal, ClientEarning, Affiliate } from '../types'
 
 function parseMonthNum(label: string) {
@@ -20,18 +22,23 @@ function parseMonthNum(label: string) {
 }
 
 export const OverviewPage: React.FC = () => {
+  const { role } = useAuth()
   const [rows,      setRows]      = useState<EarningRow[]>([])
   const [loading,   setLoading]   = useState(true)
-  const [affiliate, setAffiliate] = useState<Affiliate>('Both')
+  const [affiliate, setAffiliate] = useState<Affiliate>(role === 'Ad-Lab' ? 'Both' : (role as Affiliate))
   const [startMonth, setStartMonth] = useState<string | null>(null)
   const [endMonth,   setEndMonth]   = useState<string | null>(null)
 
   useEffect(() => {
-    fetchAllEarnings().then(data => {
+    const fetchAction = role === 'Ad-Lab' 
+      ? fetchAllEarnings() 
+      : fetchEarningsByAffiliate(role as string)
+    
+    fetchAction.then(data => {
       setRows(data)
       setLoading(false)
     })
-  }, [])
+  }, [role])
 
   const availableMonths = useMemo(() => deriveMonths(rows), [rows])
 
@@ -57,7 +64,7 @@ export const OverviewPage: React.FC = () => {
   const totalEarned   = filtered.reduce((s, r) => s + (r.amount_owed  ?? 0), 0)
   const totalBillable = filtered.reduce((s, r) => s + (r.billable_usd ?? 0), 0)
   const vinceTotal    = rangedRows.filter(r => r.affiliate === 'Vince').reduce((s, r) => s + (r.amount_owed ?? 0), 0)
-  const difanoTotal   = rangedRows.filter(r => r.affiliate === 'Difiano').reduce((s, r) => s + (r.amount_owed ?? 0), 0)
+  const difianoTotal   = rangedRows.filter(r => r.affiliate === 'Difiano').reduce((s, r) => s + (r.amount_owed ?? 0), 0)
   const avgMonthly    = monthlyTotals.length ? totalEarned / monthlyTotals.length : 0
 
   if (loading) {
@@ -88,17 +95,23 @@ export const OverviewPage: React.FC = () => {
       {/* KPI Grid */}
       <div className="kpi-grid">
         <KPICard label="Total Earnings"   value={totalEarned}   variant="total"   icon={DollarSign} delay={0}    />
-        <KPICard label="Vince Earnings"   value={vinceTotal}    variant="vince"   icon={TrendingUp}  delay={0.05} />
-        <KPICard label="Difiano Earnings" value={difanoTotal}   variant="difiano" icon={TrendingUp}  delay={0.10} />
+        {role === 'Ad-Lab' && (
+          <>
+            <KPICard label="Vince Earnings"   value={vinceTotal}    variant="vince"   icon={TrendingUp}  delay={0.05} />
+            <KPICard label="Difiano Earnings" value={difianoTotal}   variant="difiano" icon={TrendingUp}  delay={0.10} />
+          </>
+        )}
         <KPICard label="Avg / Month"      value={avgMonthly}    variant="neutral" icon={Award}       delay={0.15} />
         <KPICard label="Total Managed"    value={totalBillable} variant="neutral" icon={Users}       delay={0.20} />
       </div>
 
       {/* Affiliate Toggle */}
-      <div style={{ marginBottom: 22, display: 'flex', alignItems: 'center', gap: 12 }}>
-        <span style={{ color: 'var(--text-muted)', fontSize: 13, fontWeight: 600 }}>View:</span>
-        <AffiliateToggle selected={affiliate} onChange={setAffiliate} />
-      </div>
+      {role === 'Ad-Lab' && (
+        <div style={{ marginBottom: 22, display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span style={{ color: 'var(--text-muted)', fontSize: 13, fontWeight: 600 }}>View:</span>
+          <AffiliateToggle selected={affiliate} onChange={setAffiliate} />
+        </div>
+      )}
 
       {/* Area Chart */}
       <motion.div
@@ -121,19 +134,36 @@ export const OverviewPage: React.FC = () => {
         }
       </motion.div>
 
-      {/* Bottom row */}
-      <div className="charts-grid">
+      <div className="charts-grid" style={{ gridTemplateColumns: role === 'Ad-Lab' ? 'repeat(auto-fit, minmax(320px, 1fr))' : '1fr 1fr' }}>
+        {role === 'Ad-Lab' && (
+          <motion.div
+            className="card"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.32 }}
+          >
+            <div className="card-header">
+              <div className="card-title">Total Combined — Monthly</div>
+            </div>
+            {monthlyTotals.length > 0
+              ? <EarningsLineChart data={monthlyTotals} />
+              : <div className="empty-state"><div>No data</div></div>
+            }
+          </motion.div>
+        )}
+
         <motion.div
           className="card"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.32 }}
+          transition={{ duration: 0.4, delay: 0.35 }}
         >
           <div className="card-header">
-            <div className="card-title">Total Combined — Monthly</div>
+            <div className="card-title">Earnings Distribution</div>
+            <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>Top Clients</span>
           </div>
-          {monthlyTotals.length > 0
-            ? <EarningsLineChart data={monthlyTotals} />
+          {topClients.length > 0
+            ? <EarningsDonutChart data={topClients} />
             : <div className="empty-state"><div>No data</div></div>
           }
         </motion.div>

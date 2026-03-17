@@ -6,6 +6,8 @@ import { TrendsPage } from './pages/TrendsPage'
 import { ClientsPage } from './pages/ClientsPage'
 import { ComparisonPage } from './pages/ComparisonPage'
 import { ThemeProvider } from './ThemeContext'
+import { AuthProvider, useAuth } from './AuthContext'
+import { AccessGate } from './components/AccessGate'
 import './index.css'
 
 const pageInfo: Record<string, { title: string; section: string }> = {
@@ -15,9 +17,14 @@ const pageInfo: Record<string, { title: string; section: string }> = {
   '/comparison': { title: 'Vince vs Difiano', section: 'Comparison' },
 }
 
-function AppRoutes() {
+function AppContent() {
+  const { role } = useAuth()
   const location = useLocation()
   const info = pageInfo[location.pathname] ?? { title: 'Dashboard', section: 'Dashboard' }
+
+  if (!role) {
+    return <AccessGate />
+  }
 
   return (
     <div className="app-shell">
@@ -26,7 +33,7 @@ function AppRoutes() {
         <header className="topbar">
           <div className="topbar-left">
             <div className="topbar-breadcrumb">
-              <span>Ad-Lab</span>
+              <span>{role === 'Ad-Lab' ? 'Ad-Lab' : role}</span>
               <span className="topbar-breadcrumb-sep">/</span>
               <span>{info.section}</span>
             </div>
@@ -49,9 +56,11 @@ function AppRoutes() {
 export default function App() {
   return (
     <ThemeProvider>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <AppContent />
+        </BrowserRouter>
+      </AuthProvider>
     </ThemeProvider>
   )
 }

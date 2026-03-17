@@ -1,5 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import { useAuth } from '../AuthContext'
 import type { EarningRow, ClientEarning } from '../types'
 import { formatCurrency } from '../lib/data'
 
@@ -80,6 +81,7 @@ interface MonthlyEarningsTableProps {
 }
 
 export const MonthlyEarningsTable: React.FC<MonthlyEarningsTableProps> = ({ rows, month }) => {
+  const { role } = useAuth()
   const filtered = rows.filter(r => r.month === month)
 
   if (!filtered.length) {
@@ -96,7 +98,7 @@ export const MonthlyEarningsTable: React.FC<MonthlyEarningsTableProps> = ({ rows
       <table className="data-table">
         <thead>
           <tr>
-            <th>Affiliate</th>
+            {role === 'Ad-Lab' && <th>Affiliate</th>}
             <th>Client</th>
             <th>Client Billable</th>
             <th>Referral %</th>
@@ -111,11 +113,13 @@ export const MonthlyEarningsTable: React.FC<MonthlyEarningsTableProps> = ({ rows
               animate={{ opacity: 1 }}
               transition={{ delay: i * 0.018 }}
             >
-              <td>
-                <span className={`badge badge-${row.affiliate.toLowerCase()}`}>
-                  {row.affiliate}
-                </span>
-              </td>
+              {role === 'Ad-Lab' && (
+                <td>
+                  <span className={`badge badge-${row.affiliate.toLowerCase()}`}>
+                    {row.affiliate}
+                  </span>
+                </td>
+              )}
               <td style={{ fontWeight: 600 }}>{row.client_name}</td>
               <td>{row.billable_usd != null ? formatCurrency(row.billable_usd) : '—'}</td>
               <td>

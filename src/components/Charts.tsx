@@ -12,8 +12,12 @@ import {
   Legend,
   LineChart,
   Line,
+  PieChart,
+  Pie,
+  Cell,
 } from 'recharts'
-import type { MonthlyTotal } from '../types'
+import { useAuth } from '../AuthContext'
+import type { MonthlyTotal, ClientEarning } from '../types'
 import { formatCurrency } from '../lib/data'
 
 interface EarningsChartProps {
@@ -61,6 +65,7 @@ const shortMonth = (month: string) => {
 }
 
 export const EarningsAreaChart: React.FC<EarningsChartProps> = ({ data }) => {
+  const { role } = useAuth()
   const chartData = data.map(d => ({
     ...d,
     month_short: shortMonth(d.month),
@@ -108,24 +113,28 @@ export const EarningsAreaChart: React.FC<EarningsChartProps> = ({ data }) => {
             iconType="circle"
             iconSize={8}
           />
-          <Area
-            type="monotone"
-            dataKey="Vince"
-            stroke="#ca5cec"
-            strokeWidth={2.5}
-            fill="url(#vinceGrad)"
-            dot={{ fill: '#ca5cec', r: 3, strokeWidth: 0 }}
-            activeDot={{ r: 5, fill: '#ca5cec', strokeWidth: 2, stroke: '#fff' }}
-          />
-          <Area
-            type="monotone"
-            dataKey="Difiano"
-            stroke="#06b6d4"
-            strokeWidth={2.5}
-            fill="url(#difanoGrad)"
-            dot={{ fill: '#06b6d4', r: 3, strokeWidth: 0 }}
-            activeDot={{ r: 5, fill: '#06b6d4', strokeWidth: 2, stroke: '#fff' }}
-          />
+          {(role === 'Ad-Lab' || role === 'Vince') && (
+            <Area
+              type="monotone"
+              dataKey="Vince"
+              stroke="#ca5cec"
+              strokeWidth={2.5}
+              fill="url(#vinceGrad)"
+              dot={{ fill: '#ca5cec', r: 3, strokeWidth: 0 }}
+              activeDot={{ r: 5, fill: '#ca5cec', strokeWidth: 2, stroke: '#fff' }}
+            />
+          )}
+          {(role === 'Ad-Lab' || role === 'Difiano') && (
+            <Area
+              type="monotone"
+              dataKey="Difiano"
+              stroke="#06b6d4"
+              strokeWidth={2.5}
+              fill="url(#difanoGrad)"
+              dot={{ fill: '#06b6d4', r: 3, strokeWidth: 0 }}
+              activeDot={{ r: 5, fill: '#06b6d4', strokeWidth: 2, stroke: '#fff' }}
+            />
+          )}
         </ComposedChart>
       </ResponsiveContainer>
     </motion.div>
@@ -133,6 +142,7 @@ export const EarningsAreaChart: React.FC<EarningsChartProps> = ({ data }) => {
 }
 
 export const EarningsBarChart: React.FC<EarningsChartProps> = ({ data }) => {
+  const { role } = useAuth()
   const chartData = data.map(d => ({
     ...d,
     month_short: shortMonth(d.month),
@@ -170,8 +180,12 @@ export const EarningsBarChart: React.FC<EarningsChartProps> = ({ data }) => {
             iconType="circle"
             iconSize={8}
           />
-          <Bar dataKey="Vince"   fill="#ca5cec" radius={[5, 5, 0, 0]} maxBarSize={28} opacity={0.92} />
-          <Bar dataKey="Difiano" fill="#06b6d4" radius={[5, 5, 0, 0]} maxBarSize={28} opacity={0.88} />
+          {(role === 'Ad-Lab' || role === 'Vince') && (
+            <Bar dataKey="Vince"   fill="#ca5cec" radius={[5, 5, 0, 0]} maxBarSize={28} opacity={0.92} />
+          )}
+          {(role === 'Ad-Lab' || role === 'Difiano') && (
+            <Bar dataKey="Difiano" fill="#06b6d4" radius={[5, 5, 0, 0]} maxBarSize={28} opacity={0.88} />
+          )}
         </ComposedChart>
       </ResponsiveContainer>
     </motion.div>
@@ -226,6 +240,90 @@ export const EarningsLineChart: React.FC<{ data: MonthlyTotal[] }> = ({ data }) 
             activeDot={{ r: 5.5, strokeWidth: 2, stroke: '#fff', fill: '#10b981' }}
           />
         </LineChart>
+      </ResponsiveContainer>
+    </motion.div>
+  )
+}
+
+const COLORS = ['#ca5cec', '#06b6d4', '#10b981', '#f59e0b', '#ef4444', '#6366f1']
+
+export const EarningsDonutChart: React.FC<{ data: ClientEarning[] }> = ({ data }) => {
+  if (!data?.length) return null
+
+  // Ensure data has the required properties for Recharts Pie, use total_owed for distribution
+  const chartData = data.map((item, index) => ({
+    name: item.client_name,
+    value: item.total_owed,
+    color: COLORS[index % COLORS.length]
+  }))
+
+  const CustomPieTooltip = ({ active, payload }: any) => {
+    if (!active || !payload?.length) return null
+    const labelData = payload[0].payload
+    return (
+      <div style={{
+        background: 'var(--chart-tooltip-bg)',
+        border: '1px solid var(--chart-tooltip-border)',
+        borderRadius: 12,
+        padding: '12px 16px',
+        boxShadow: 'var(--chart-tooltip-shadow)',
+        minWidth: 160,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{ width: 8, height: 8, borderRadius: '50%', background: payload[0].color, flexShrink: 0 }} />
+          <span style={{ fontSize: 13, color: 'var(--text-secondary)', fontWeight: 600, flex: 1 }}>{labelData.name}</span>
+          <span style={{ fontSize: 13.5, color: 'var(--text-primary)', fontWeight: 700 }}>
+            {formatCurrency(labelData.value)}
+          </span>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, delay: 0.35 }}
+      style={{ width: '100%', height: 210, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    >
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+          <Pie
+            data={chartData}
+            cx="50%"
+            cy="50%"
+            innerRadius={65}
+            outerRadius={85}
+            paddingAngle={4}
+            dataKey="value"
+            stroke="none"
+          >
+            {chartData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={entry.color} />
+            ))}
+          </Pie>
+          <Tooltip content={<CustomPieTooltip />} />
+          <Legend 
+            verticalAlign="bottom" 
+            height={36}
+            content={(props) => {
+              const { payload } = props;
+              return (
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px 16px' }}>
+                  {payload?.map((entry, index) => (
+                    <li key={`item-${index}`} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <span style={{ width: 8, height: 8, borderRadius: '50%', background: entry.color }} />
+                      <span style={{ fontSize: 11.5, color: 'var(--text-secondary)', fontWeight: 500 }}>
+                        {entry.value ? (String(entry.value).length > 15 ? String(entry.value).substring(0, 15) + '...' : String(entry.value)) : 'Unknown'}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              );
+            }}
+          />
+        </PieChart>
       </ResponsiveContainer>
     </motion.div>
   )

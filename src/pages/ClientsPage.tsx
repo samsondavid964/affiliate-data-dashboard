@@ -1,24 +1,32 @@
 import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { fetchAllEarnings, computeTopClients } from '../lib/data'
+import { fetchAllEarnings, fetchEarningsByAffiliate, computeTopClients } from '../lib/data'
+import { useAuth } from '../AuthContext'
 import type { EarningRow, ClientEarning, Affiliate } from '../types'
 import { ClientTable } from '../components/Tables'
 import { AffiliateToggle } from '../components/Filters'
 
 export const ClientsPage: React.FC = () => {
+  const { role } = useAuth()
   const [rows,    setRows]    = useState<EarningRow[]>([])
   const [loading, setLoading] = useState(true)
-  const [affiliate, setAffiliate] = useState<Affiliate>('Both')
+  const [affiliate, setAffiliate] = useState<Affiliate>(role === 'Ad-Lab' ? 'Both' : (role as Affiliate))
   const [sortBy,    setSortBy]    = useState<'owed' | 'billable'>('owed')
 
   useEffect(() => {
-    fetchAllEarnings().then(data => {
+    const fetchAction = role === 'Ad-Lab' 
+      ? fetchAllEarnings() 
+      : fetchEarningsByAffiliate(role as string)
+
+    fetchAction.then(data => {
       setRows(data)
       setLoading(false)
     })
-  }, [])
+  }, [role])
 
-  const filtered = affiliate === 'Both' ? rows : rows.filter(r => r.affiliate === affiliate)
+  const filtered = role === 'Ad-Lab' 
+    ? (affiliate === 'Both' ? rows : rows.filter(r => r.affiliate === affiliate))
+    : rows
   const clients: ClientEarning[] = computeTopClients(filtered)
     .sort((a, b) => sortBy === 'owed' ? b.total_owed - a.total_owed : b.total_billable - a.total_billable)
 
@@ -39,7 +47,7 @@ export const ClientsPage: React.FC = () => {
       </div>
 
       <div className="filter-bar" style={{ gap: 14 }}>
-        <AffiliateToggle selected={affiliate} onChange={setAffiliate} />
+        {role === 'Ad-Lab' && <AffiliateToggle selected={affiliate} onChange={setAffiliate} />}
         <div className="filter-chip-group">
           <button
             className={`filter-chip ${sortBy === 'owed' ? 'active' : ''}`}
