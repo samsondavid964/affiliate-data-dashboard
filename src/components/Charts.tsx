@@ -78,7 +78,7 @@ export const EarningsAreaChart: React.FC<EarningsChartProps> = ({ data }) => {
       initial={{ opacity: 0, scale: 0.99 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, delay: 0.15 }}
-      style={{ width: '100%', height: 290 }}
+      style={{ width: '100%', height: 290, minWidth: 0 }}
     >
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart data={chartData} margin={{ top: 8, right: 8, left: 8, bottom: 4 }}>
@@ -155,7 +155,7 @@ export const EarningsBarChart: React.FC<EarningsChartProps> = ({ data }) => {
       initial={{ opacity: 0, scale: 0.99 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      style={{ width: '100%', height: 290 }}
+      style={{ width: '100%', height: 290, minWidth: 0 }}
     >
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart data={chartData} margin={{ top: 8, right: 8, left: 8, bottom: 4 }}>
@@ -204,7 +204,7 @@ export const EarningsLineChart: React.FC<{ data: MonthlyTotal[] }> = ({ data }) 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      style={{ width: '100%', height: 210 }}
+      style={{ width: '100%', height: 210, minWidth: 0 }}
     >
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={chartData} margin={{ top: 5, right: 8, left: 5, bottom: 4 }}>
@@ -285,7 +285,7 @@ export const EarningsDonutChart: React.FC<{ data: ClientEarning[] }> = ({ data }
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5, delay: 0.35 }}
-      style={{ width: '100%', height: 210, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      style={{ width: '100%', height: 210, display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: 0 }}
     >
       <ResponsiveContainer width="100%" height="100%">
         <PieChart margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>

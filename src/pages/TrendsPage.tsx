@@ -57,7 +57,7 @@ export const TrendsPage: React.FC = () => {
   return (
     <div>
       {/* Hero + filters */}
-      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 22, flexWrap: 'wrap', gap: 12 }}>
+      <div className="page-top-row">
         <div className="page-hero" style={{ marginBottom: 0 }}>
           <h1 className="page-hero-title">Monthly Trends</h1>
           <p className="page-hero-sub">
@@ -148,7 +148,7 @@ export const TrendsPage: React.FC = () => {
         </div>
 
         {!drillMonth ? (
-          <div style={{ overflowX: 'auto' }}>
+          <div className="table-responsive">
             <table className="data-table">
               <thead>
                 <tr>

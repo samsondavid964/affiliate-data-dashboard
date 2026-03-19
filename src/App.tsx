@@ -1,5 +1,7 @@
 
+import { useState } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { Menu } from 'lucide-react'
 import { Sidebar } from './components/Sidebar'
 import { OverviewPage } from './pages/OverviewPage'
 import { TrendsPage } from './pages/TrendsPage'
@@ -21,6 +23,7 @@ function AppContent() {
   const { role } = useAuth()
   const location = useLocation()
   const info = pageInfo[location.pathname] ?? { title: 'Dashboard', section: 'Dashboard' }
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
 
   if (!role) {
     return <AccessGate />
@@ -28,7 +31,10 @@ function AppContent() {
 
   return (
     <div className="app-shell">
-      <Sidebar />
+      <Sidebar
+        isOpen={mobileNavOpen}
+        onClose={() => setMobileNavOpen(false)}
+      />
       <main className="main-content">
         <header className="topbar">
           <div className="topbar-left">
@@ -38,6 +44,16 @@ function AppContent() {
               <span>{info.section}</span>
             </div>
             <h2 className="topbar-title">{info.title}</h2>
+          </div>
+          <div className="topbar-right">
+            {/* Hamburger — visible only on mobile via CSS */}
+            <button
+              className="mobile-menu-btn"
+              onClick={() => setMobileNavOpen(true)}
+              aria-label="Open navigation menu"
+            >
+              <Menu size={22} />
+            </button>
           </div>
         </header>
         <div className="page-content">

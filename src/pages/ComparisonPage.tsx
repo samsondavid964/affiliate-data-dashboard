@@ -130,7 +130,7 @@ export const ComparisonPage: React.FC = () => {
         <div className="card-header">
           <div className="card-title">Stats Comparison</div>
         </div>
-        <div style={{ overflowX: 'auto' }}>
+        <div className="table-responsive">
           <table className="data-table">
             <thead>
               <tr>
