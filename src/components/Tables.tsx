@@ -27,7 +27,6 @@ export const ClientTable: React.FC<ClientTableProps> = ({ clients, showAffiliate
             <th>#</th>
             <th>Client</th>
             {showAffiliate && <th>Affiliate</th>}
-            <th>Total Billable</th>
             <th>Total Earned</th>
             <th>Fee</th>
           </tr>
@@ -49,7 +48,6 @@ export const ClientTable: React.FC<ClientTableProps> = ({ clients, showAffiliate
                   </span>
                 </td>
               )}
-              <td style={{ color: 'var(--text-secondary)' }}>{formatCurrency(client.total_billable)}</td>
               <td>
                 <span style={{ color: 'var(--accent-green)', fontWeight: 700 }}>
                   {formatCurrency(client.total_owed)}

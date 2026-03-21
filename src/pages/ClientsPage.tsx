@@ -11,7 +11,6 @@ export const ClientsPage: React.FC = () => {
   const [rows,    setRows]    = useState<EarningRow[]>([])
   const [loading, setLoading] = useState(true)
   const [affiliate, setAffiliate] = useState<Affiliate>(role === 'Ad-Lab' ? 'Both' : (role as Affiliate))
-  const [sortBy,    setSortBy]    = useState<'owed' | 'billable'>('owed')
 
   useEffect(() => {
     const fetchAction = role === 'Ad-Lab' 
@@ -28,7 +27,7 @@ export const ClientsPage: React.FC = () => {
     ? (affiliate === 'Both' ? rows : rows.filter(r => r.affiliate === affiliate))
     : rows
   const clients: ClientEarning[] = computeTopClients(filtered)
-    .sort((a, b) => sortBy === 'owed' ? b.total_owed - a.total_owed : b.total_billable - a.total_billable)
+    .sort((a, b) => b.total_owed - a.total_owed)
 
   if (loading) return (
     <div className="loading-spinner">
@@ -48,20 +47,7 @@ export const ClientsPage: React.FC = () => {
 
       <div className="filter-bar" style={{ gap: 14 }}>
         {role === 'Ad-Lab' && <AffiliateToggle selected={affiliate} onChange={setAffiliate} />}
-        <div className="filter-chip-group">
-          <button
-            className={`filter-chip ${sortBy === 'owed' ? 'active' : ''}`}
-            onClick={() => setSortBy('owed')}
-          >
-            Sort by Earned
-          </button>
-          <button
-            className={`filter-chip ${sortBy === 'billable' ? 'active' : ''}`}
-            onClick={() => setSortBy('billable')}
-          >
-            Sort by Billable
-          </button>
-        </div>
+
       </div>
 
       <motion.div

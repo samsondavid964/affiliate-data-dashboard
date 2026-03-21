@@ -21,8 +21,6 @@ export const ComparisonPage: React.FC = () => {
 
   const vinceTotalOwed     = vinceRows.reduce( (s, r) => s + (r.amount_owed  ?? 0), 0)
   const difanoTotalOwed    = difanoRows.reduce((s, r) => s + (r.amount_owed  ?? 0), 0)
-  const vinceTotalBillable = vinceRows.reduce( (s, r) => s + (r.billable_usd ?? 0), 0)
-  const difanoTotalBillable= difanoRows.reduce((s, r) => s + (r.billable_usd ?? 0), 0)
 
   const vinceClients  = new Set(vinceRows.map( r => r.client_name)).size
   const difanoClients = new Set(difanoRows.map(r => r.client_name)).size
@@ -49,10 +47,9 @@ export const ComparisonPage: React.FC = () => {
 
   const statRows = [
     { label: 'Total Earned',   vince: formatCurrency(vinceTotalOwed),   difano: formatCurrency(difanoTotalOwed),   vColor: 'var(--accent-primary)', dColor: 'var(--accent-secondary)' },
-    { label: 'Total Managed',  vince: formatCurrency(vinceTotalBillable),difano: formatCurrency(difanoTotalBillable) },
+    { label: 'Best Month',     vince: vinceBestMonth.month,   difano: difanoBestMonth.month },
     { label: 'Clients Served', vince: String(vinceClients),   difano: String(difanoClients) },
     { label: 'Active Months',  vince: String(vinceMonths),    difano: String(difanoMonths) },
-    { label: 'Best Month',     vince: vinceBestMonth.month,   difano: difanoBestMonth.month },
   ]
 
   return (

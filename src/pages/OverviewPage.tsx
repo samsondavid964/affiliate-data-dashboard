@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { DollarSign, TrendingUp, Users, Award } from 'lucide-react'
+import { DollarSign, TrendingUp, Award } from 'lucide-react'
 import { KPICard } from '../components/KPICard'
 import { EarningsAreaChart, EarningsLineChart, EarningsDonutChart } from '../components/Charts'
 import { ClientTable } from '../components/Tables'
@@ -62,7 +62,10 @@ export const OverviewPage: React.FC = () => {
   const topClients: ClientEarning[]   = computeTopClients(filtered).slice(0, 5)
 
   const totalEarned   = filtered.reduce((s, r) => s + (r.amount_owed  ?? 0), 0)
-  const totalBillable = filtered.reduce((s, r) => s + (r.billable_usd ?? 0), 0)
+  const bestMonthObj = monthlyTotals.length > 0 
+    ? monthlyTotals.reduce((best, m) => m.total > best.total ? m : best) 
+    : { total: 0, month: '—' }
+  const bestMonthLabel = bestMonthObj.month
   const vinceTotal    = rangedRows.filter(r => r.affiliate === 'Vince').reduce((s, r) => s + (r.amount_owed ?? 0), 0)
   const difianoTotal   = rangedRows.filter(r => r.affiliate === 'Difiano').reduce((s, r) => s + (r.amount_owed ?? 0), 0)
   const avgMonthly    = monthlyTotals.length ? totalEarned / monthlyTotals.length : 0
@@ -102,7 +105,7 @@ export const OverviewPage: React.FC = () => {
           </>
         )}
         <KPICard label="Avg / Month"      value={avgMonthly}    variant="neutral" icon={Award}       delay={0.15} />
-        <KPICard label="Total Managed"    value={totalBillable} variant="neutral" icon={Users}       delay={0.20} />
+        <KPICard label="Best Month"       value={bestMonthLabel} isCurrency={false} variant="neutral" icon={TrendingUp} delay={0.20} />
       </div>
 
       {/* Affiliate Toggle */}

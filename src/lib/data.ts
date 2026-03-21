@@ -25,7 +25,9 @@ export async function fetchAllEarnings(): Promise<EarningRow[]> {
     console.error('Error fetching earnings:', error)
     return []
   }
-  return data as EarningRow[]
+  const rows = data as EarningRow[]
+  // Filter out purely numeric client names e.g., "1772" or "1,772.50"
+  return rows.filter(r => !/^[\d.,]+$/.test(r.client_name.trim()))
 }
 
 export async function fetchEarningsByAffiliate(affiliate: string): Promise<EarningRow[]> {
@@ -39,7 +41,9 @@ export async function fetchEarningsByAffiliate(affiliate: string): Promise<Earni
     console.error('Error fetching earnings:', error)
     return []
   }
-  return data as EarningRow[]
+  const rows = data as EarningRow[]
+  // Filter out purely numeric client names e.g., "1772" or "1,772.50"
+  return rows.filter(r => !/^[\d.,]+$/.test(r.client_name.trim()))
 }
 
 export function computeMonthlyTotals(rows: EarningRow[]): MonthlyTotal[] {
