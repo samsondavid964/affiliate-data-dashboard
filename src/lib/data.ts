@@ -27,7 +27,11 @@ export async function fetchAllEarnings(): Promise<EarningRow[]> {
   }
   const rows = data as EarningRow[]
   // Filter out purely numeric client names e.g., "1772" or "1,772.50"
-  return rows.filter(r => !/^[\d.,]+$/.test(r.client_name.trim()))
+  // and hide any rows where the affiliate has zero/null earnings
+  return rows.filter(r => 
+    !/^[\d.,]+$/.test(r.client_name.trim()) && 
+    (r.amount_owed !== null && r.amount_owed > 0)
+  )
 }
 
 export async function fetchEarningsByAffiliate(affiliate: string): Promise<EarningRow[]> {
@@ -43,7 +47,11 @@ export async function fetchEarningsByAffiliate(affiliate: string): Promise<Earni
   }
   const rows = data as EarningRow[]
   // Filter out purely numeric client names e.g., "1772" or "1,772.50"
-  return rows.filter(r => !/^[\d.,]+$/.test(r.client_name.trim()))
+  // and hide any rows where the affiliate has zero/null earnings
+  return rows.filter(r => 
+    !/^[\d.,]+$/.test(r.client_name.trim()) && 
+    (r.amount_owed !== null && r.amount_owed > 0)
+  )
 }
 
 export function computeMonthlyTotals(rows: EarningRow[]): MonthlyTotal[] {
